@@ -77,14 +77,25 @@ const LoginPage = (props: Props) => {
                 )}
               />
 
-              <div className="flex flex-row gap-2.5">
-                <Checkbox id="terms" />
-                <label
-                  htmlFor="terms"
-                  className="text-sm font-normal leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-muted-foreground"
-                >
-                  Remember me
-                </label>
+              <div className="flex justify-between items-center">
+                <div className="flex flex-row gap-2.5">
+                  <Checkbox id="remember" />
+                  <label
+                    htmlFor="remember"
+                    className="text-sm font-normal leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-muted-foreground hover:text-neutral-800  hover:cursor-pointer transition-colors"
+                  >
+                    Remember me
+                  </label>
+                </div>
+
+                <div>
+                  <a
+                    href="#"
+                    className="text-sm font-normal text-muted-foreground hover:underline cursor-pointer"
+                  >
+                    Forgot Password
+                  </a>
+                </div>
               </div>
 
               <Button type="submit">Sign in</Button>
