@@ -13,6 +13,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Separator } from "@/components/ui/separator";
 
 interface Props {}
 
@@ -43,12 +44,12 @@ const LoginPage = (props: Props) => {
       <div className="h-full flex items-center justify-center">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-            <Card className="p-10 shadow-2xl shadow-black w-100">
-              <CardTitle className="flex justify-center -mb-5 font-bold text-lg">
+            <Card className="p-9 shadow-2xl shadow-black w-100">
+              <CardTitle className="flex justify-center items-center -mb-5 font-bold text-lg">
                 Welcome Back
               </CardTitle>
               <CardDescription className="flex justify-center mb-3 text-xs">
-                Enter your credentials to access your account
+                Get started - it's free.
               </CardDescription>
               <FormField
                 control={form.control}
@@ -98,7 +99,39 @@ const LoginPage = (props: Props) => {
                 </div>
               </div>
 
-              <Button type="submit">Sign in</Button>
+              <Button type="submit" className="hover: cursor-pointer">
+                Sign in
+              </Button>
+
+              <div className="relative flex items-center py-1">
+                <div className="flex-grow border-t border-gray-300"></div>
+                <span className="flex-shrink mx-1 text-[10px] text-gray-500 font-semibold">
+                  OR CONTINUE WITH
+                </span>
+                <div className="flex-grow border-t border-gray-300"></div>
+              </div>
+
+              <div className="flex justify-center items-center w-full gap-5">
+                <Button
+                  type="button"
+                  className="bg-white border-gray-300 border-1 text-muted-foreground hover:bg-neutral-200 transition-colors min-w-1/2"
+                >
+                  GitHub
+                </Button>
+                <Button
+                  type="button"
+                  className="bg-white border-gray-300 border-1 text-muted-foreground hover:bg-neutral-200 transition-colors min-w-1/2"
+                >
+                  Google
+                </Button>
+              </div>
+
+              <a
+                href="#"
+                className="text-sm font-normal text-muted-foreground hover:underline cursor-pointer mr-auto ml-auto"
+              >
+                Don't have an account? Sign up
+              </a>
             </Card>
           </form>
         </Form>
@@ -108,3 +141,13 @@ const LoginPage = (props: Props) => {
 };
 
 export default LoginPage;
+
+{
+  /* <div className="w-1/2">
+          <img
+            src="https://i0.wp.com/picjumbo.com/wp-content/uploads/red-and-blue-pillars-wallpaper-abstract-background-free-image.jpeg?w=600&quality=80"
+            alt="Serene landscape"
+            className="h-full w-full object-cover"
+          />
+        </div> */
+}
