@@ -14,6 +14,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Separator } from "@/components/ui/separator";
+import { ReactEventHandler, ReactHTMLElement, useState } from "react";
 
 interface Props {}
 
@@ -35,6 +36,15 @@ const LoginPage = (props: Props) => {
     },
   });
 
+  const [signUpActive, setSignUpActive] = useState<boolean>(false);
+
+  const handleSignUp = () => {
+    const negateSignUp = !signUpActive;
+
+    setSignUpActive(negateSignUp);
+    console.log(negateSignUp);
+  };
+
   const onSubmit = (values: z.infer<typeof formSchema>) => {
     console.log(values);
   };
@@ -45,7 +55,7 @@ const LoginPage = (props: Props) => {
         <div className="grid grid-cols-1 md:grid-cols-2">
           {/* Form Side */}
           <Card className="p-8 rounded-none md:rounded-l-lg">
-            <CardTitle className="text-center text-xl font-bold">Hi Pamkin!</CardTitle>
+            <CardTitle className="text-center text-xl font-bold">Welcome to Hunter Jira!</CardTitle>
             <CardDescription className="text-center -mt-5 mb-3 text-xs">
               Get started - it's free.
             </CardDescription>
@@ -130,6 +140,7 @@ const LoginPage = (props: Props) => {
                   <a
                     href="#"
                     className="text-sm font-normal text-muted-foreground hover:underline cursor-pointer"
+                    onClick={handleSignUp}
                   >
                     Don't have an account? Sign up
                   </a>
