@@ -5,7 +5,7 @@ import SignUpForm from "./SignUpForm/SignUpForm";
 interface Props {}
 
 const LoginPage = (props: Props) => {
-  const [signUpActive, setSignUpActive] = useState<boolean>(false);
+  const [signUpActive, setSignUpActive] = useState<boolean>(true);
 
   const ImageCard = (
     <div className="flex-1/2 rounded-none">
