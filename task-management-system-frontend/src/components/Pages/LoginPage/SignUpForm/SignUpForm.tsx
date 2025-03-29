@@ -27,14 +27,14 @@ const SignUpForm = ({ setSignUpActive }: Props) => {
       email: z
         .string()
         .min(1, { message: "Email is required." })
-        .email({ message: "Invalid email address" }),
+        .email({ message: "Invalid email address." }),
       password: z.string().min(4, {
         message: "Password must be at least 4 characters.",
       }),
       confirmPassword: z.string(),
     })
     .refine((data) => data.password === data.confirmPassword, {
-      message: "Passwords don't match",
+      message: "Passwords don't match.",
       path: ["confirmPassword"],
     });
 
@@ -53,7 +53,7 @@ const SignUpForm = ({ setSignUpActive }: Props) => {
   };
   return (
     <>
-      <Card className="p-8 h-full rounded-none flex-1/2">
+      <Card className="p-8 h-[575px] rounded-none flex-1/2">
         <CardTitle className="text-center text-xl font-bold">Create Account</CardTitle>
         <CardDescription className="text-center -mt-5 mb-3 text-xs">
           Get started - it's free.

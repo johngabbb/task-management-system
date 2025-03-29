@@ -42,8 +42,8 @@ const LoginForm = ({ setSignUpActive }: Props) => {
 
   return (
     <>
-      <Card className="p-8 h-full rounded-none flex-1/2">
-        <CardTitle className="text-center text-xl font-bold">Welcome to Gabam!</CardTitle>
+      <Card className="p-8 h-[575px] rounded-none flex-1/2">
+        <CardTitle className="text-center text-xl font-bold">Welcome Back</CardTitle>
         <CardDescription className="text-center -mt-5 mb-3 text-xs">
           Get started - it's free.
         </CardDescription>
