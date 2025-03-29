@@ -9,7 +9,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Checkbox } from "@radix-ui/react-checkbox";
+import { Checkbox } from "@/components/ui/checkbox";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -42,7 +42,7 @@ const LoginForm = ({ setSignUpActive }: Props) => {
 
   return (
     <>
-      <Card className="p-8 h-full rounded-none flex-auto">
+      <Card className="p-8 h-full rounded-none flex-1/2">
         <CardTitle className="text-center text-xl font-bold">Welcome to Gabam!</CardTitle>
         <CardDescription className="text-center -mt-5 mb-3 text-xs">
           Get started - it's free.
@@ -52,36 +52,40 @@ const LoginForm = ({ setSignUpActive }: Props) => {
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
             <div className="space-y-4">
               <div>
-                <FormLabel className="block text-sm font-medium mb-2 whitespace-nowrap">
-                  Username
-                </FormLabel>
+                <div className="flex justify-between items-center mb-2">
+                  <FormLabel className="text-sm font-medium whitespace-nowrap">Username</FormLabel>
+                  <div className="text-xs text-destructive">
+                    {form.formState.errors.username?.message}
+                  </div>
+                </div>
                 <FormField
                   control={form.control}
                   name="username"
                   render={({ field }) => (
-                    <FormItem>
+                    <FormItem className="space-y-0">
                       <FormControl>
                         <Input placeholder="Username" {...field} />
                       </FormControl>
-                      <FormMessage />
                     </FormItem>
                   )}
                 />
               </div>
 
               <div>
-                <FormLabel className="block text-sm font-medium mb-2 whitespace-nowrap">
-                  Password
-                </FormLabel>
+                <div className="flex justify-between items-center mb-2">
+                  <FormLabel className="text-sm font-medium whitespace-nowrap">Password</FormLabel>
+                  <div className="text-xs text-destructive">
+                    {form.formState.errors.password?.message}
+                  </div>
+                </div>
                 <FormField
                   control={form.control}
                   name="password"
                   render={({ field }) => (
-                    <FormItem>
+                    <FormItem className="space-y-0">
                       <FormControl>
                         <Input type="password" placeholder="Password" {...field} />
                       </FormControl>
-                      <FormMessage />
                     </FormItem>
                   )}
                 />

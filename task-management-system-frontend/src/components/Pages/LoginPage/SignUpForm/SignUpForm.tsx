@@ -20,7 +20,10 @@ interface Props {
 
 const SignUpForm = ({ setSignUpActive }: Props) => {
   const formSchema = z.object({
-    username: z.string().min(2, {
+    name: z.string().min(2, {
+      message: "Username must be at least 2 characters.",
+    }),
+    email: z.string().min(2, {
       message: "Username must be at least 2 characters.",
     }),
     password: z.string().min(5, {
@@ -34,7 +37,8 @@ const SignUpForm = ({ setSignUpActive }: Props) => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      username: "",
+      name: "",
+      email: "",
       password: "",
       confirmPassword: "",
     },
@@ -45,7 +49,7 @@ const SignUpForm = ({ setSignUpActive }: Props) => {
   };
   return (
     <>
-      <Card className="p-8 h-full rounded-none flex-auto">
+      <Card className="p-8 h-full rounded-none flex-1/2">
         <CardTitle className="text-center text-xl font-bold">Create Account</CardTitle>
         <CardDescription className="text-center -mt-5 mb-3 text-xs">
           Get started - it's free.
@@ -56,15 +60,33 @@ const SignUpForm = ({ setSignUpActive }: Props) => {
             <div className="space-y-4">
               <div>
                 <FormLabel className="block text-sm font-medium mb-2 whitespace-nowrap">
-                  Username
+                  Name
                 </FormLabel>
                 <FormField
                   control={form.control}
-                  name="username"
+                  name="name"
                   render={({ field }) => (
                     <FormItem>
                       <FormControl>
-                        <Input placeholder="Username" {...field} />
+                        <Input placeholder="Name" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+
+              <div>
+                <FormLabel className="block text-sm font-medium mb-2 whitespace-nowrap">
+                  Email
+                </FormLabel>
+                <FormField
+                  control={form.control}
+                  name="email"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <Input placeholder="Email" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -113,25 +135,8 @@ const SignUpForm = ({ setSignUpActive }: Props) => {
               type="submit"
               className="w-full bg-black hover:bg-neutral-800 whitespace-nowrap"
             >
-              Sign in
+              Sign up
             </Button>
-
-            <div className="flex items-center py-2">
-              <div className="flex-grow border-t border-gray-300"></div>
-              <span className="flex-shrink mx-3 text-xs text-gray-500 uppercase whitespace-nowrap">
-                Or continue with
-              </span>
-              <div className="flex-grow border-t border-gray-300"></div>
-            </div>
-
-            <div className="grid grid-cols-2 gap-4">
-              <Button type="button" variant="outline" className="w-full whitespace-nowrap">
-                GitHub
-              </Button>
-              <Button type="button" variant="outline" className="w-full whitespace-nowrap">
-                Google
-              </Button>
-            </div>
 
             <div className="text-center pt-2">
               <a
@@ -139,7 +144,7 @@ const SignUpForm = ({ setSignUpActive }: Props) => {
                 className="text-sm font-normal text-muted-foreground hover:underline cursor-pointer whitespace-nowrap"
                 onClick={() => setSignUpActive(false)}
               >
-                Don't have an account? Sign up
+                Already got an account? Sign in
               </a>
             </div>
           </form>

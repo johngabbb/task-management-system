@@ -8,11 +8,11 @@ const LoginPage = (props: Props) => {
   const [signUpActive, setSignUpActive] = useState<boolean>(false);
 
   const ImageCard = (
-    <div className="flex-[20%] rounded-none">
+    <div className="flex-1/2 rounded-none">
       <img
         src="https://images.unsplash.com/photo-1497032628192-86f99bcd76bc?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8Y29mZmVlJTIwbGFwdG9wfGVufDB8fDB8fHww"
         alt="Coffee and headphones"
-        className="h-full object-cover"
+        className={`h-full object-cover ${signUpActive ? "-scale-x-100" : ""}`}
       />
     </div>
   );
