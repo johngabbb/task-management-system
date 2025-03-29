@@ -20,7 +20,7 @@ interface Props {
 
 const LoginForm = ({ setSignUpActive }: Props) => {
   const formSchema = z.object({
-    username: z.string().min(2, {
+    email: z.string().min(2, {
       message: "Username must be at least 2 characters.",
     }),
     password: z.string().min(5, {
@@ -31,7 +31,7 @@ const LoginForm = ({ setSignUpActive }: Props) => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      username: "",
+      email: "",
       password: "",
     },
   });
@@ -53,18 +53,18 @@ const LoginForm = ({ setSignUpActive }: Props) => {
             <div className="space-y-4">
               <div>
                 <div className="flex justify-between items-center mb-2">
-                  <FormLabel className="text-sm font-medium whitespace-nowrap">Username</FormLabel>
+                  <FormLabel className="text-sm font-medium whitespace-nowrap">Email</FormLabel>
                   <div className="text-xs text-destructive">
-                    {form.formState.errors.username?.message}
+                    {form.formState.errors.email?.message}
                   </div>
                 </div>
                 <FormField
                   control={form.control}
-                  name="username"
+                  name="email"
                   render={({ field }) => (
                     <FormItem className="space-y-0">
                       <FormControl>
-                        <Input placeholder="Username" {...field} />
+                        <Input placeholder="Email" {...field} />
                       </FormControl>
                     </FormItem>
                   )}
