@@ -1,24 +1,21 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardTitle, CardDescription } from "@/components/ui/card";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
+import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useNavigate } from "react-router-dom";
 
 interface Props {
   setSignUpActive: (e: boolean) => void;
+  setIsAuthenticated: (e: boolean) => void;
 }
 
-const LoginForm = ({ setSignUpActive }: Props) => {
+const LoginForm = ({ setSignUpActive, setIsAuthenticated }: Props) => {
+  const navigate = useNavigate();
+
   const formSchema = z.object({
     email: z.string().min(2, {
       message: "Username must be at least 2 characters.",
@@ -37,12 +34,14 @@ const LoginForm = ({ setSignUpActive }: Props) => {
   });
 
   const onSubmit = (values: z.infer<typeof formSchema>) => {
+    setIsAuthenticated(true);
     console.log(values);
+    navigate("/dashboard");
   };
 
   return (
     <>
-      <Card className="p-8 h-[575px] rounded-none flex-1/2">
+      <Card className="p-8 h-[575px] flex-1/2 rounded-l-2xl rounded-r-none">
         <CardTitle className="text-center text-xl font-bold">Welcome Back</CardTitle>
         <CardDescription className="text-center -mt-5 mb-3 text-xs">
           Get started - it's free.
@@ -103,12 +102,13 @@ const LoginForm = ({ setSignUpActive }: Props) => {
                 </label>
               </div>
 
-              <a
-                href="#"
+              <button
+                type="button"
                 className="text-sm font-normal text-muted-foreground hover:underline cursor-pointer whitespace-nowrap"
+                onClick={(e) => e.preventDefault()}
               >
                 Forgot Password
-              </a>
+              </button>
             </div>
 
             <Button
@@ -136,13 +136,16 @@ const LoginForm = ({ setSignUpActive }: Props) => {
             </div>
 
             <div className="text-center pt-2">
-              <a
-                href="#"
+              <button
+                type="button"
                 className="text-sm font-normal text-muted-foreground hover:underline cursor-pointer whitespace-nowrap"
-                onClick={() => setSignUpActive(true)}
+                onClick={(e) => {
+                  e.preventDefault();
+                  setSignUpActive(true);
+                }}
               >
                 Don't have an account? Sign up
-              </a>
+              </button>
             </div>
           </form>
         </Form>

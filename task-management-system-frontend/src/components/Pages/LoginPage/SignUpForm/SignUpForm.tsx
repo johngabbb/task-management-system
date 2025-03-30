@@ -1,15 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardTitle, CardDescription } from "@/components/ui/card";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
+import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Checkbox } from "@radix-ui/react-checkbox";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -53,7 +45,7 @@ const SignUpForm = ({ setSignUpActive }: Props) => {
   };
   return (
     <>
-      <Card className="p-8 h-[575px] rounded-none flex-1/2">
+      <Card className="p-8 h-[575px] flex-1/2 rounded-r-2xl rounded-l-none">
         <CardTitle className="text-center text-xl font-bold">Create Account</CardTitle>
         <CardDescription className="text-center -mt-5 mb-3 text-xs">
           Get started - it's free.
@@ -147,19 +139,22 @@ const SignUpForm = ({ setSignUpActive }: Props) => {
 
             <Button
               type="submit"
-              className="w-full bg-black hover:bg-neutral-800 whitespace-nowrap mt-5"
+              className="w-full bg-black hover:bg-neutral-800 whitespace-nowrap mt-3"
             >
               Sign up
             </Button>
 
-            <div className="text-center pt-2">
-              <a
-                href="#"
+            <div className="text-center pb-2">
+              <button
+                type="button"
                 className="text-sm font-normal text-muted-foreground hover:underline cursor-pointer whitespace-nowrap"
-                onClick={() => setSignUpActive(false)}
+                onClick={(e) => {
+                  e.preventDefault();
+                  setSignUpActive(false);
+                }}
               >
                 Already got an account? Sign in
-              </a>
+              </button>
             </div>
           </form>
         </Form>
