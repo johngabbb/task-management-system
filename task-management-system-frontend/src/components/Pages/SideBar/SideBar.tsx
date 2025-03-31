@@ -20,7 +20,7 @@ const SideBar = (props: Props) => {
   };
 
   return (
-    <div className="bg-neutral-800 overflow-hidden rounded-lg ml-5 my-5 p-5">
+    <div className="bg-neutral-800 overflow-hidden p-5">
       <div className="flex flex-col gap-5 h-full">
         <Button className="bg-transparent cursor-pointer h-20 shadow-none">
           <div className="flex flex-row gap-2 items-center">

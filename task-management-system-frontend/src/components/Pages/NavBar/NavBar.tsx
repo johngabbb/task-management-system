@@ -9,14 +9,14 @@ interface Props {}
 
 const NavBar = (props: Props) => {
   return (
-    <div className="flex justify-between p-5">
+    <div className="flex justify-between p-5 bg-black">
       <div className="flex flex-col justify-start">
-        <div className="text-white text-4xl mb-3 font-bold tracking-wide">Dashboard</div>
-        <Button className="transition-all duration-300 group bg-transparent p-0 h-auto justify-start pointer-events-none">
+        <div className="text-white text-4xl mb-3 font-bold tracking-wide"></div>
+        {/* <Button className="transition-all duration-300 group bg-transparent p-0 h-auto justify-start pointer-events-none">
           <span className="text-violet-900 text-sm font-medium transition-colors duration-300 group-hover:text-violet-700 pointer-events-auto cursor-pointer">
             You have 3 active tasks
           </span>
-        </Button>
+        </Button> */}
       </div>
 
       <div className="flex gap-3">
@@ -42,7 +42,7 @@ const NavBar = (props: Props) => {
         <div className="flex flex-col gap-2 items-end">
           <Button
             type="button"
-            className="bg-transparent h-10 transition-all duration-300 group cursor-pointer"
+            className="bg-transparent hover:bg-transparent h-10 transition-all duration-300 group cursor-pointer"
           >
             <div className="flex items-center justify-between gap-3">
               <Avatar className="-ml-1">
@@ -59,14 +59,14 @@ const NavBar = (props: Props) => {
             </div>
           </Button>
 
-          <Button
+          {/* <Button
             type="button"
             className="bg-violet-950 group w-auto overflow-hidden duration-500 hover:bg-violet-900 transition-all text-neutral-100 shadow-none cursor-pointer"
           >
             <span className="text-neutral-300 transition-colors duration-300 group-hover:text-white">
               + New Task
             </span>
-          </Button>
+          </Button> */}
         </div>
       </div>
     </div>
