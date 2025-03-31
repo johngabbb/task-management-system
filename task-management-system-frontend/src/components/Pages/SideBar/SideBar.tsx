@@ -8,12 +8,19 @@ import {
   FolderKanban,
   Settings,
 } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 interface Props {}
 
 const SideBar = (props: Props) => {
+  const navigate = useNavigate();
+
+  const movePage = (page: string) => {
+    navigate(`/${page}`);
+  };
+
   return (
-    <div className="bg-neutral-800 overflow-hidden rounded-lg ml-5 my-5 p-5 h-full">
+    <div className="bg-neutral-800 overflow-hidden rounded-lg ml-5 my-5 p-5">
       <div className="flex flex-col gap-5 h-full">
         <Button className="bg-transparent cursor-pointer h-20 shadow-none">
           <div className="flex flex-row gap-2 items-center">
@@ -30,33 +37,62 @@ const SideBar = (props: Props) => {
           </div>
         </Button>
 
-        <span className="border-b border-violet-950 mb-20"></span>
+        <span className="border-b border-violet-950 mb-3 mt-3"></span>
 
-        <Button className="cursor-pointer bg-transparent justify-start shadow-none">
+        {/* Dashboard Page */}
+        <Button
+          className="cursor-pointer bg-transparent justify-start shadow-none"
+          type="button"
+          onClick={() => movePage("dashboard")}
+        >
           <div className="flex gap-2 items-center">
             <LayoutDashboard size={18} className="text-neutral-300" />
             <div className="text-neutral-300">Dashboard</div>
           </div>
         </Button>
-        <Button className="cursor-pointer bg-transparent justify-start shadow-none ">
+
+        {/* Tasks Page */}
+        <Button
+          className="cursor-pointer bg-transparent justify-start shadow-none"
+          type="button"
+          onClick={() => movePage("tasks")}
+        >
           <div className="flex gap-2 items-center">
             <CheckSquare size={18} className="text-neutral-300" />
             <div className="text-neutral-300">Tasks</div>
           </div>
         </Button>
-        <Button className="cursor-pointer bg-transparent justify-start shadow-none">
+
+        {/* Backlog Page */}
+        <Button
+          className="cursor-pointer bg-transparent justify-start shadow-none"
+          type="button"
+          onClick={() => movePage("backlog")}
+        >
           <div className="flex gap-2 items-center">
             <ListTodo size={18} className="text-neutral-300" />
             <div className="text-neutral-300">Backlog</div>
           </div>
         </Button>
-        <Button className="cursor-pointer bg-transparent justify-start shadow-none">
+
+        {/* Team Page */}
+        <Button
+          className="cursor-pointer bg-transparent justify-start shadow-none"
+          type="button"
+          onClick={() => movePage("team")}
+        >
           <div className="flex gap-2 items-center">
             <Users size={18} className="text-neutral-300" />
             <div className="text-neutral-300">Team</div>
           </div>
         </Button>
-        <Button className="cursor-pointer bg-transparent justify-start shadow-none">
+
+        {/* Projects Page */}
+        <Button
+          className="cursor-pointer bg-transparent justify-start shadow-none"
+          type="button"
+          onClick={() => movePage("projects")}
+        >
           <div className="flex gap-2 items-center">
             <FolderKanban size={18} className="text-neutral-300" />
             <div className="text-neutral-300">Projects</div>
@@ -65,7 +101,7 @@ const SideBar = (props: Props) => {
 
         <div className="mt-auto flex flex-col gap-5">
           <span className="border-b border-violet-950"></span>
-          <Button className="cursor-pointer bg-transparent justify-start shadow-none mb-10">
+          <Button className="cursor-pointer bg-transparent justify-start shadow-none">
             <div className="flex gap-2 items-center">
               <Settings size={18} className="text-neutral-300" />
               <div className="text-neutral-300">Settings</div>

@@ -12,11 +12,16 @@ function App() {
       <div className="bg-gradient-to-b from-neutral-700 via-neutral-950 to-neutral-950 h-screen overflow-auto">
         <Routes>
           <Route path="/login" element={<LoginPage setIsAuthenticated={setIsAuthenticated} />} />
-          <Route
-            path="/dashboard"
-            // element={isAuthenticated ? <Dashboard /> : <Navigate to="/login" replace />}
-            element={<Dashboard />}
-          ></Route>
+
+          <Route path="/dashboard" element={<Dashboard />}></Route>
+
+          <Route path="/tasks" element={<Dashboard />}></Route>
+
+          <Route path="/backlog" element={<Dashboard />}></Route>
+
+          <Route path="/team" element={<Dashboard />}></Route>
+
+          <Route path="/projects" element={<Dashboard />}></Route>
         </Routes>
       </div>
     </BrowserRouter>
