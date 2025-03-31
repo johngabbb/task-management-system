@@ -1,15 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardTitle, CardDescription } from "@/components/ui/card";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
+import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Checkbox } from "@radix-ui/react-checkbox";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -19,20 +11,24 @@ interface Props {
 }
 
 const SignUpForm = ({ setSignUpActive }: Props) => {
-  const formSchema = z.object({
-    name: z.string().min(2, {
-      message: "Username must be at least 2 characters.",
-    }),
-    email: z.string().min(2, {
-      message: "Username must be at least 2 characters.",
-    }),
-    password: z.string().min(5, {
-      message: "Password must be at least 5 characters.",
-    }),
-    confirmPassword: z.string().min(5, {
-      message: "Password must be at least 5 characters.",
-    }),
-  });
+  const formSchema = z
+    .object({
+      name: z.string().min(1, {
+        message: "What should we call you?",
+      }),
+      email: z
+        .string()
+        .min(1, { message: "Email is required." })
+        .email({ message: "Invalid email address." }),
+      password: z.string().min(4, {
+        message: "Password must be at least 4 characters.",
+      }),
+      confirmPassword: z.string(),
+    })
+    .refine((data) => data.password === data.confirmPassword, {
+      message: "Passwords don't match.",
+      path: ["confirmPassword"],
+    });
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -49,7 +45,7 @@ const SignUpForm = ({ setSignUpActive }: Props) => {
   };
   return (
     <>
-      <Card className="p-8 h-full rounded-none flex-1/2">
+      <Card className="p-8 h-[575px] flex-1/2 rounded-r-2xl rounded-l-none">
         <CardTitle className="text-center text-xl font-bold">Create Account</CardTitle>
         <CardDescription className="text-center -mt-5 mb-3 text-xs">
           Get started - it's free.
@@ -59,9 +55,12 @@ const SignUpForm = ({ setSignUpActive }: Props) => {
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
             <div className="space-y-4">
               <div>
-                <FormLabel className="block text-sm font-medium mb-2 whitespace-nowrap">
-                  Name
-                </FormLabel>
+                <div className="flex justify-between items-center mb-2">
+                  <FormLabel className="text-sm font-medium whitespace-nowrap">Name</FormLabel>
+                  <div className="text-xs text-destructive">
+                    {form.formState.errors?.name?.message}
+                  </div>
+                </div>
                 <FormField
                   control={form.control}
                   name="name"
@@ -70,16 +69,18 @@ const SignUpForm = ({ setSignUpActive }: Props) => {
                       <FormControl>
                         <Input placeholder="Name" {...field} />
                       </FormControl>
-                      <FormMessage />
                     </FormItem>
                   )}
                 />
               </div>
 
               <div>
-                <FormLabel className="block text-sm font-medium mb-2 whitespace-nowrap">
-                  Email
-                </FormLabel>
+                <div className="flex justify-between items-center mb-2">
+                  <FormLabel className="text-sm font-medium whitespace-nowrap">Email</FormLabel>
+                  <div className="text-xs text-destructive">
+                    {form.formState.errors?.email?.message}
+                  </div>
+                </div>
                 <FormField
                   control={form.control}
                   name="email"
@@ -88,16 +89,18 @@ const SignUpForm = ({ setSignUpActive }: Props) => {
                       <FormControl>
                         <Input placeholder="Email" {...field} />
                       </FormControl>
-                      <FormMessage />
                     </FormItem>
                   )}
                 />
               </div>
 
               <div>
-                <FormLabel className="block text-sm font-medium mb-2 whitespace-nowrap">
-                  Password
-                </FormLabel>
+                <div className="flex justify-between items-center mb-2">
+                  <FormLabel className="text-sm font-medium whitespace-nowrap">Password</FormLabel>
+                  <div className="text-xs text-destructive">
+                    {form.formState.errors?.password?.message}
+                  </div>
+                </div>
                 <FormField
                   control={form.control}
                   name="password"
@@ -106,25 +109,28 @@ const SignUpForm = ({ setSignUpActive }: Props) => {
                       <FormControl>
                         <Input type="password" placeholder="Password" {...field} />
                       </FormControl>
-                      <FormMessage />
                     </FormItem>
                   )}
                 />
               </div>
 
               <div>
-                <FormLabel className="block text-sm font-medium mb-2 whitespace-nowrap">
-                  Confirm Password
-                </FormLabel>
+                <div className="flex justify-between items-center mb-2">
+                  <FormLabel className="text-sm font-medium whitespace-nowrap">
+                    Confirm Password
+                  </FormLabel>
+                  <div className="text-xs text-destructive">
+                    {form.formState.errors?.confirmPassword?.message}
+                  </div>
+                </div>
                 <FormField
                   control={form.control}
                   name="confirmPassword"
                   render={({ field }) => (
                     <FormItem>
                       <FormControl>
-                        <Input type="confirmPassword" placeholder="Confirm Password" {...field} />
+                        <Input type="password" placeholder="Confirm Password" {...field} />
                       </FormControl>
-                      <FormMessage />
                     </FormItem>
                   )}
                 />
@@ -133,19 +139,22 @@ const SignUpForm = ({ setSignUpActive }: Props) => {
 
             <Button
               type="submit"
-              className="w-full bg-black hover:bg-neutral-800 whitespace-nowrap"
+              className="w-full bg-black hover:bg-neutral-800 whitespace-nowrap mt-3"
             >
               Sign up
             </Button>
 
-            <div className="text-center pt-2">
-              <a
-                href="#"
+            <div className="text-center pb-2">
+              <button
+                type="button"
                 className="text-sm font-normal text-muted-foreground hover:underline cursor-pointer whitespace-nowrap"
-                onClick={() => setSignUpActive(false)}
+                onClick={(e) => {
+                  e.preventDefault();
+                  setSignUpActive(false);
+                }}
               >
                 Already got an account? Sign in
-              </a>
+              </button>
             </div>
           </form>
         </Form>

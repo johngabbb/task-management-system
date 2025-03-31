@@ -1,26 +1,23 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardTitle, CardDescription } from "@/components/ui/card";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
+import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useNavigate } from "react-router-dom";
 
 interface Props {
   setSignUpActive: (e: boolean) => void;
+  setIsAuthenticated: (e: boolean) => void;
 }
 
-const LoginForm = ({ setSignUpActive }: Props) => {
+const LoginForm = ({ setSignUpActive, setIsAuthenticated }: Props) => {
+  const navigate = useNavigate();
+
   const formSchema = z.object({
-    username: z.string().min(2, {
+    email: z.string().min(2, {
       message: "Username must be at least 2 characters.",
     }),
     password: z.string().min(5, {
@@ -31,19 +28,21 @@ const LoginForm = ({ setSignUpActive }: Props) => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      username: "",
+      email: "",
       password: "",
     },
   });
 
   const onSubmit = (values: z.infer<typeof formSchema>) => {
+    setIsAuthenticated(true);
     console.log(values);
+    navigate("/dashboard");
   };
 
   return (
     <>
-      <Card className="p-8 h-full rounded-none flex-1/2">
-        <CardTitle className="text-center text-xl font-bold">Welcome to Gabam!</CardTitle>
+      <Card className="p-8 h-[575px] flex-1/2 rounded-l-2xl rounded-r-none">
+        <CardTitle className="text-center text-xl font-bold">Welcome Back</CardTitle>
         <CardDescription className="text-center -mt-5 mb-3 text-xs">
           Get started - it's free.
         </CardDescription>
@@ -53,18 +52,18 @@ const LoginForm = ({ setSignUpActive }: Props) => {
             <div className="space-y-4">
               <div>
                 <div className="flex justify-between items-center mb-2">
-                  <FormLabel className="text-sm font-medium whitespace-nowrap">Username</FormLabel>
+                  <FormLabel className="text-sm font-medium whitespace-nowrap">Email</FormLabel>
                   <div className="text-xs text-destructive">
-                    {form.formState.errors.username?.message}
+                    {form.formState.errors.email?.message}
                   </div>
                 </div>
                 <FormField
                   control={form.control}
-                  name="username"
+                  name="email"
                   render={({ field }) => (
                     <FormItem className="space-y-0">
                       <FormControl>
-                        <Input placeholder="Username" {...field} />
+                        <Input placeholder="Email" {...field} />
                       </FormControl>
                     </FormItem>
                   )}
@@ -103,12 +102,13 @@ const LoginForm = ({ setSignUpActive }: Props) => {
                 </label>
               </div>
 
-              <a
-                href="#"
+              <button
+                type="button"
                 className="text-sm font-normal text-muted-foreground hover:underline cursor-pointer whitespace-nowrap"
+                onClick={(e) => e.preventDefault()}
               >
                 Forgot Password
-              </a>
+              </button>
             </div>
 
             <Button
@@ -136,13 +136,16 @@ const LoginForm = ({ setSignUpActive }: Props) => {
             </div>
 
             <div className="text-center pt-2">
-              <a
-                href="#"
+              <button
+                type="button"
                 className="text-sm font-normal text-muted-foreground hover:underline cursor-pointer whitespace-nowrap"
-                onClick={() => setSignUpActive(true)}
+                onClick={(e) => {
+                  e.preventDefault();
+                  setSignUpActive(true);
+                }}
               >
                 Don't have an account? Sign up
-              </a>
+              </button>
             </div>
           </form>
         </Form>
