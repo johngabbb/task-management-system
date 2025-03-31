@@ -19,21 +19,9 @@ const Dashboard = (props: Props) => {
   return (
     <>
       <div className="grid grid-cols-[300px_1fr] h-full w-full bg-neutral-900">
-        {/* Sidebar */}
-        <div className="bg-neutral-800 overflow-hidden rounded-lg ml-5 my-5 p-5">
-          <div className="flex flex-col gap-3">
-            <Button>Hunter Task</Button>
-            <Button>Dashboard</Button>
-            <Button>Tasks</Button>
-            <Button>Backlog</Button>
-            <Button>Team</Button>
-            <Button>Projects</Button>
-            <Button>Settings</Button>
-          </div>
-        </div>
+        <SideBar />
 
         <div className="grid grid-rows-[100px_1fr]">
-          {/* Navbar */}
           <NavBar />
 
           {/* MainContent */}

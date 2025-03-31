@@ -12,8 +12,8 @@ const NavBar = (props: Props) => {
     <div className="flex justify-between p-5">
       <div className="flex flex-col justify-start">
         <div className="text-white text-4xl mb-3 font-bold tracking-wide">Dashboard</div>
-        <Button className="transition-all duration-300 group bg-transparent p-0 h-auto justify-start">
-          <span className="text-violet-900 text-sm font-medium transition-colors duration-300 group-hover:text-violet-700">
+        <Button className="transition-all duration-300 group bg-transparent p-0 h-auto justify-start pointer-events-none">
+          <span className="text-violet-900 text-sm font-medium transition-colors duration-300 group-hover:text-violet-700 pointer-events-auto cursor-pointer">
             You have 3 active tasks
           </span>
         </Button>
@@ -30,7 +30,7 @@ const NavBar = (props: Props) => {
           <Button
             variant="ghost"
             size="icon"
-            className="hover:bg-inherit rounded-full transition-all duration-500"
+            className="hover:bg-inherit rounded-full transition-all duration-500 cursor-pointer"
           >
             <Bell className="text-neutral-400 transition-colors duration-500 group-hover:text-white" />
             <span className="absolute -top-2 -right-2 flex h-4 w-4 items-center justify-center rounded-full bg-red-900 text-xs text-white transition-colors duration-500 group-hover:bg-red-500">
@@ -40,7 +40,10 @@ const NavBar = (props: Props) => {
         </div>
 
         <div className="flex flex-col gap-2 items-end">
-          <Button type="button" className="bg-transparent h-10 transition-all duration-300 group">
+          <Button
+            type="button"
+            className="bg-transparent h-10 transition-all duration-300 group cursor-pointer"
+          >
             <div className="flex items-center justify-between gap-3">
               <Avatar className="-ml-1">
                 <AvatarImage
@@ -58,7 +61,7 @@ const NavBar = (props: Props) => {
 
           <Button
             type="button"
-            className="bg-violet-950 group w-auto overflow-hidden duration-500 hover:bg-violet-900 transition-all text-neutral-100 shadow-none"
+            className="bg-violet-950 group w-auto overflow-hidden duration-500 hover:bg-violet-900 transition-all text-neutral-100 shadow-none cursor-pointer"
           >
             <span className="text-neutral-300 transition-colors duration-300 group-hover:text-white">
               + New Task
