@@ -9,72 +9,64 @@ interface Props {}
 
 const NavBar = (props: Props) => {
   return (
-    <>
-      <div className="w-full bg-neutral-800 py-5 overflow-hidden">
-        <div className="flex items-center justify-between px-20">
-          {/* Left section with logo and welcome message and search bar*/}
-          <div className="flex items-center gap-x-10">
-            <div className="flex items-center justify-center h-16 w-16 min-w-16 mr-4">
-              <img
-                className="h-full w-full object-contain"
-                src="https://png.pngtree.com/png-clipart/20240709/original/pngtree-white-dog-logo-with-blue-circle-vector-png-image_15523760.png"
-                alt="logo"
-              />
-            </div>
+    <div className="flex justify-between p-5">
+      <div className="flex flex-col justify-start">
+        <div className="text-white text-4xl mb-3 font-bold tracking-wide">Dashboard</div>
+        <Button className="transition-all duration-300 group bg-transparent p-0 h-auto justify-start">
+          <span className="text-violet-900 text-sm font-medium transition-colors duration-300 group-hover:text-violet-700">
+            You have 3 active tasks
+          </span>
+        </Button>
+      </div>
 
-            <div className="flex flex-col text-white">
-              <div className="font-bold text-2xl whitespace-nowrap">Welcome back, Gab!</div>
-              <div className="flex flex-row gap-1">
-                <div className="font-medium text-sm whitespace-nowrap">You have</div>
-                <div className="font-medium text-sm text-cyan-500 whitespace-nowrap">3</div>
-                <div className="font-medium text-sm whitespace-nowrap">active tasks</div>
-              </div>
-            </div>
+      <div className="flex gap-3">
+        <Input
+          type="search"
+          placeholder="Search..."
+          className="text-white shadow-none border-white border-1 focus-visible:border focus-visible:border-violet-950 focus-visible:ring-0"
+        />
 
-            <Input
-              type="search"
-              placeholder="Search..."
-              className="text-white shadow-none border-white border-1 focus-visible:border focus-visible:border-cyan-500 focus-visible:ring-0"
-            />
-          </div>
+        <div className="relative group">
+          <Button
+            variant="ghost"
+            size="icon"
+            className="hover:bg-inherit rounded-full transition-all duration-500"
+          >
+            <Bell className="text-neutral-400 transition-colors duration-500 group-hover:text-white" />
+            <span className="absolute -top-2 -right-2 flex h-4 w-4 items-center justify-center rounded-full bg-red-900 text-xs text-white transition-colors duration-500 group-hover:bg-red-500">
+              3
+            </span>
+          </Button>
+        </div>
 
-          {/* Right section */}
-          <div className="flex items-center gap-x-5">
-            <Button className="bg-inherit group overflow-hidden duration-500 hover:bg-inherit transition-all text-neutral-100 shadow-none">
-              <span className="inline-block transition-transform duration-500 group-hover:scale-120">
-                + New Task
-              </span>
-            </Button>
-
-            {/* Notification Button */}
-            <div className="relative group">
-              <Button
-                variant="ghost"
-                size="icon"
-                className="text-white hover:bg-inherit rounded-full transition-all duration-500"
-              >
-                <Bell
-                  size={20}
-                  className="transition-transform duration-500 group-hover:scale-150 text-white"
+        <div className="flex flex-col gap-2 items-end">
+          <Button type="button" className="bg-transparent h-10 transition-all duration-300 group">
+            <div className="flex items-center justify-between gap-3">
+              <Avatar className="-ml-1">
+                <AvatarImage
+                  src="https://motionbgs.com/media/1192/sasuke-lightning-jutsu.jpg"
+                  alt="@shadcn"
+                  className="object-cover"
                 />
-                <span className="absolute -top-2 -right-2 flex h-4 w-4 items-center justify-center rounded-full bg-red-900 text-xs text-white transition-transform duration-500 group-hover:scale-110">
-                  3
-                </span>
-              </Button>
+                <AvatarFallback>GAB</AvatarFallback>
+              </Avatar>
+              <span className="text-neutral-300 transition-colors duration-300 group-hover:text-white">
+                Gabriel Reyes
+              </span>
             </div>
+          </Button>
 
-            <Avatar className="h-10 w-10 ml-5">
-              <AvatarImage
-                src="https://i.pinimg.com/736x/0e/8a/f2/0e8af249915f7f2a79d48e344bafcee6.jpg"
-                alt="@shadcn"
-                className="object-cover"
-              />
-              <AvatarFallback>CN</AvatarFallback>
-            </Avatar>
-          </div>
+          <Button
+            type="button"
+            className="bg-violet-950 group w-auto overflow-hidden duration-500 hover:bg-violet-900 transition-all text-neutral-100 shadow-none"
+          >
+            <span className="text-neutral-300 transition-colors duration-300 group-hover:text-white">
+              + New Task
+            </span>
+          </Button>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 
