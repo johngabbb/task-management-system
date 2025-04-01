@@ -19,6 +19,33 @@ import {
 
 interface Props {}
 
+const teamOverview = [
+  {
+    memberName: "Gabriel Reyes",
+    role: "Senior Software Engineer Lead",
+    status: "Active",
+    numTask: "3",
+  },
+  {
+    memberName: "Andrea Reyes",
+    role: "Senior Software Architect",
+    status: "Active",
+    numTask: "182",
+  },
+  {
+    memberName: "Hunter Husky",
+    role: "Junior Software Engineer",
+    status: "Active",
+    numTask: "5",
+  },
+  {
+    memberName: "Max Beagle",
+    role: "Quality Assurance",
+    status: "Active",
+    numTask: "82",
+  },
+];
+
 const tasks = [
   {
     ticketNum: "HT-1823",
@@ -82,7 +109,7 @@ const Dashboard = (props: Props) => {
 
   return (
     <>
-      <div className="h-screen w-full grid grid-cols-[300px_1fr] bg-neutral-900 text-white">
+      <div className="h-screen w-full grid grid-cols-[300px_1fr] bg-neutral-900 text-white overflow-hidden">
         <div className="grid grid-rows-[80px_120px_1fr]">
           <div className="flex gap-1 items-center justify-center border-r border-b border-neutral-700">
             <img className="h-9 w-auto items-center" src={wolfLogo} />
@@ -118,8 +145,9 @@ const Dashboard = (props: Props) => {
           </div>
 
           {/* Main Content */}
-          <div className="bg-neutral-800">
-            <div className="flex flex-wrap items-stretch gap-3 p-10">
+          <div className="bg-neutral-800 h-full flex flex-col overflow-hidden">
+            {/* Task Summary */}
+            <div className="flex flex-wrap items-stretch gap-3 p-6 shrink-0">
               <Card className="flex-1 min-w-[250px] bg-neutral-900 border-1 border-neutral-700 text-white p-5">
                 <div className="flex items-center justify-between w-full">
                   <div>
@@ -156,7 +184,7 @@ const Dashboard = (props: Props) => {
               <Card className="flex-1 min-w-[250px] bg-neutral-900 border-1 border-neutral-700 text-white p-5">
                 <div className="flex items-center justify-between w-full">
                   <div>
-                    <div className="font-semibold text-sm text-neutral-300 mb-4">To Dos</div>
+                    <div className="font-semibold text-sm text-neutral-300 mb-4">Pending</div>
                     <div className="text-4xl font-bold">412</div>
                     <div className="text-xs">100 last month</div>
                   </div>
@@ -165,59 +193,114 @@ const Dashboard = (props: Props) => {
               </Card>
             </div>
 
-            <div className="pl-10 pr-10">
-              <div className="bg-neutral-900 border-1 rounded-lg border-neutral-700 overflow-hidden pt-10 pb-5 px-10">
-                <div className="text-4xl pb-10">Task Overview</div>
-                <div className="">
+            {/* Task Overview */}
+            <div className="px-6 flex-1 min-h-0 overflow-auto">
+              <div className="bg-neutral-900 border-1 rounded-lg border-neutral-700 overflow-hidden p-6 h-full">
+                <div className="text-2xl font-bold mb-6">Task Overview</div>
+                <Table className="">
+                  <TableHeader className="">
+                    <TableRow className="border-b border-neutral-700 hover:bg-transparent">
+                      <TableHead className="w-[100px] text-neutral-300 text-[15px]">Task</TableHead>
+                      <TableHead className="flex-1 text-neutral-300 text-[15px]">Title</TableHead>
+                      <TableHead className="w-[150px] text-neutral-300 text-[15px]">
+                        Status
+                      </TableHead>
+                      <TableHead className="w-[150px] text-neutral-300 text-[15px]">
+                        Priority
+                      </TableHead>
+                      <TableHead className="w-[200px] text-neutral-300 text-[15px]">Team</TableHead>
+                      <TableHead className="w-[200px] text-neutral-300 text-[15px]">
+                        Created At
+                      </TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {tasks.map((task) => (
+                      <TableRow
+                        key={task.ticketNum}
+                        className="group border-b border-neutral-700 hover:bg-neutral-800 transition-colors duration-200"
+                      >
+                        <TableCell className="w-[100px] text-neutral-400 group-hover:text-white transition-colors duration-200">
+                          {task.ticketNum}
+                        </TableCell>
+                        <TableCell className="flex-1 text-neutral-400 group-hover:text-white transition-colors duration-200">
+                          {task.taskName}
+                        </TableCell>
+                        <TableCell className="w-[150px] text-neutral-400 group-hover:text-white transition-colors duration-200">
+                          {task.status}
+                        </TableCell>
+                        <TableCell className="w-[150px] text-neutral-400 group-hover:text-white transition-colors duration-200">
+                          {task.priority}
+                        </TableCell>
+                        <TableCell className="w-[200px] text-neutral-400 group-hover:text-white transition-colors duration-200">
+                          {task.team}
+                        </TableCell>
+                        <TableCell className="w-[200px] text-neutral-400 group-hover:text-white transition-colors duration-200">
+                          {task.createdAt}
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </div>
+            </div>
+
+            {/* Team and Forum Section */}
+            <div className="grid grid-cols-2 gap-6 p-6 shrink-0">
+              {/* Team Overview */}
+              <div className="bg-neutral-900 border-1 rounded-lg border-neutral-700 overflow-hidden px-6 pt-6 pb-3">
+                <div className="text-2xl font-bold mb-4">Team Status</div>
+                <div className="overflow-auto max-h-[250px]">
                   <Table className="">
                     <TableHeader className="">
                       <TableRow className="border-b border-neutral-700 hover:bg-transparent">
-                        <TableHead className="w-[100px] text-neutral-300 text-[15px]">
-                          Task
-                        </TableHead>
-                        <TableHead className="flex-1 text-neutral-300 text-[15px]">Title</TableHead>
                         <TableHead className="w-[150px] text-neutral-300 text-[15px]">
+                          Member
+                        </TableHead>
+                        <TableHead className="w-[300px] text-neutral-300 text-[15px]">
+                          Role
+                        </TableHead>
+                        <TableHead className="w-[100px] text-neutral-300 text-[15px]">
                           Status
                         </TableHead>
-                        <TableHead className="w-[150px] text-neutral-300 text-[15px]">
-                          Priority
-                        </TableHead>
-                        <TableHead className="w-[200px] text-neutral-300 text-[15px]">
-                          Team
-                        </TableHead>
-                        <TableHead className="w-[200px] text-neutral-300 text-[15px]">
-                          Created At
+                        <TableHead className="w-[100px] text-neutral-300 text-[15px]">
+                          Active Tasks
                         </TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>
-                      {tasks.map((task) => (
+                      {teamOverview.map((member) => (
                         <TableRow
-                          key={task.ticketNum}
+                          key={member.memberName}
                           className="group border-b border-neutral-700 hover:bg-neutral-800 transition-colors duration-200"
                         >
                           <TableCell className="w-[100px] text-neutral-400 group-hover:text-white transition-colors duration-200">
-                            {task.ticketNum}
+                            {member.memberName}
+                          </TableCell>
+                          <TableCell className="w-[100px] text-neutral-400 group-hover:text-white transition-colors duration-200">
+                            {member.role}
                           </TableCell>
                           <TableCell className="flex-1 text-neutral-400 group-hover:text-white transition-colors duration-200">
-                            {task.taskName}
+                            {member.status}
                           </TableCell>
                           <TableCell className="w-[150px] text-neutral-400 group-hover:text-white transition-colors duration-200">
-                            {task.status}
-                          </TableCell>
-                          <TableCell className="w-[150px] text-neutral-400 group-hover:text-white transition-colors duration-200">
-                            {task.priority}
-                          </TableCell>
-                          <TableCell className="w-[200px] text-neutral-400 group-hover:text-white transition-colors duration-200">
-                            {task.team}
-                          </TableCell>
-                          <TableCell className="w-[200px] text-neutral-400 group-hover:text-white transition-colors duration-200">
-                            {task.createdAt}
+                            {member.numTask}
                           </TableCell>
                         </TableRow>
                       ))}
                     </TableBody>
                   </Table>
+                </div>
+              </div>
+
+              {/* Forum section */}
+              <div className="bg-neutral-900 border-1 rounded-lg border-neutral-700 px-6 pt-6 pb-3">
+                <div className="text-2xl font-bold mb-4">Forum</div>
+                <div className="max-h-44  overflow-y-auto flex flex-col gap-2">
+                  <Card className="rounded-lg border-neutral-700 bg-neutral-900"></Card>
+                  <Card className="rounded-lg border-neutral-700 bg-neutral-900"></Card>
+                  <Card className="rounded-lg border-neutral-700 bg-neutral-900"></Card>
+                  <Card className="rounded-lg border-neutral-700 bg-neutral-900"></Card>
                 </div>
               </div>
             </div>
