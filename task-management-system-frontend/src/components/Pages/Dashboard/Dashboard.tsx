@@ -166,52 +166,59 @@ const Dashboard = (props: Props) => {
             </div>
 
             <div className="pl-10 pr-10">
-              <div className="bg-neutral-900 border-1 rounded-lg border-neutral-700 overflow-hidden">
-                <Table className="">
-                  <TableHeader className="">
-                    <TableRow className="border-b border-neutral-700 hover:bg-neutral-800">
-                      <TableHead className="w-[100px] text-neutral-300 text-[15px]">Task</TableHead>
-                      <TableHead className="flex-1 text-neutral-300 text-[15px]">Title</TableHead>
-                      <TableHead className="w-[150px] text-neutral-300 text-[15px]">
-                        Status
-                      </TableHead>
-                      <TableHead className="w-[150px] text-neutral-300 text-[15px]">
-                        Priority
-                      </TableHead>
-                      <TableHead className="w-[200px] text-neutral-300 text-[15px]">Team</TableHead>
-                      <TableHead className="w-[200px] text-neutral-300 text-[15px]">
-                        Created At
-                      </TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {tasks.map((task) => (
-                      <TableRow
-                        key={task.ticketNum}
-                        className="group border-b border-neutral-700 hover:bg-neutral-800 transition-colors duration-200"
-                      >
-                        <TableCell className="w-[100px] text-neutral-400 group-hover:text-white transition-colors duration-200">
-                          {task.ticketNum}
-                        </TableCell>
-                        <TableCell className="flex-1 text-neutral-400 group-hover:text-white transition-colors duration-200">
-                          {task.taskName}
-                        </TableCell>
-                        <TableCell className="w-[150px] text-neutral-400 group-hover:text-white transition-colors duration-200">
-                          {task.status}
-                        </TableCell>
-                        <TableCell className="w-[150px] text-neutral-400 group-hover:text-white transition-colors duration-200">
-                          {task.priority}
-                        </TableCell>
-                        <TableCell className="w-[200px] text-neutral-400 group-hover:text-white transition-colors duration-200">
-                          {task.team}
-                        </TableCell>
-                        <TableCell className="w-[200px] text-neutral-400 group-hover:text-white transition-colors duration-200">
-                          {task.createdAt}
-                        </TableCell>
+              <div className="bg-neutral-900 border-1 rounded-lg border-neutral-700 overflow-hidden pt-10 pb-5 px-10">
+                <div className="text-4xl pb-10">Task Overview</div>
+                <div className="">
+                  <Table className="">
+                    <TableHeader className="">
+                      <TableRow className="border-b border-neutral-700 hover:bg-transparent">
+                        <TableHead className="w-[100px] text-neutral-300 text-[15px]">
+                          Task
+                        </TableHead>
+                        <TableHead className="flex-1 text-neutral-300 text-[15px]">Title</TableHead>
+                        <TableHead className="w-[150px] text-neutral-300 text-[15px]">
+                          Status
+                        </TableHead>
+                        <TableHead className="w-[150px] text-neutral-300 text-[15px]">
+                          Priority
+                        </TableHead>
+                        <TableHead className="w-[200px] text-neutral-300 text-[15px]">
+                          Team
+                        </TableHead>
+                        <TableHead className="w-[200px] text-neutral-300 text-[15px]">
+                          Created At
+                        </TableHead>
                       </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
+                    </TableHeader>
+                    <TableBody>
+                      {tasks.map((task) => (
+                        <TableRow
+                          key={task.ticketNum}
+                          className="group border-b border-neutral-700 hover:bg-neutral-800 transition-colors duration-200"
+                        >
+                          <TableCell className="w-[100px] text-neutral-400 group-hover:text-white transition-colors duration-200">
+                            {task.ticketNum}
+                          </TableCell>
+                          <TableCell className="flex-1 text-neutral-400 group-hover:text-white transition-colors duration-200">
+                            {task.taskName}
+                          </TableCell>
+                          <TableCell className="w-[150px] text-neutral-400 group-hover:text-white transition-colors duration-200">
+                            {task.status}
+                          </TableCell>
+                          <TableCell className="w-[150px] text-neutral-400 group-hover:text-white transition-colors duration-200">
+                            {task.priority}
+                          </TableCell>
+                          <TableCell className="w-[200px] text-neutral-400 group-hover:text-white transition-colors duration-200">
+                            {task.team}
+                          </TableCell>
+                          <TableCell className="w-[200px] text-neutral-400 group-hover:text-white transition-colors duration-200">
+                            {task.createdAt}
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </div>
               </div>
             </div>
           </div>
