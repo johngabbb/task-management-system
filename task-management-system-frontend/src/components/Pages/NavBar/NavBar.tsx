@@ -5,25 +5,34 @@ import { Label } from "@radix-ui/react-label";
 import { Bell, Search } from "lucide-react";
 import React from "react";
 
-interface Props {}
+const toPascalCase = (str: string): string => {
+  // Handle empty string
+  if (!str) return "";
 
-const NavBar = (props: Props) => {
+  // Split the string by non-alphanumeric characters
+  return str
+    .split(/[^a-zA-Z0-9]/)
+    .map((word) => {
+      // Capitalize the first letter of each word and lowercase the rest
+      return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+    })
+    .join("");
+};
+
+interface Props {
+  activePage: string;
+}
+
+const NavBar = ({ activePage }: Props) => {
   return (
-    <div className="flex justify-between p-5">
-      <div className="flex flex-col justify-start">
-        <div className="text-white text-4xl mb-3 font-bold tracking-wide">Dashboard</div>
-        <Button className="transition-all duration-300 group bg-transparent p-0 h-auto justify-start pointer-events-none">
-          <span className="text-violet-900 text-sm font-medium transition-colors duration-300 group-hover:text-violet-700 pointer-events-auto cursor-pointer">
-            You have 3 active tasks
-          </span>
-        </Button>
-      </div>
+    <div className="flex justify-between items-center h-full w-full">
+      <div className="text-white text-3xl font-bold pl-5">{toPascalCase(activePage)}</div>
 
       <div className="flex gap-3">
         <Input
           type="search"
           placeholder="Search..."
-          className="text-white shadow-none border-white border-1 focus-visible:border focus-visible:border-violet-950 focus-visible:ring-0"
+          className="text-white shadow-none border-neutral-700 border-1 focus-visible:border focus-visible:border-white focus-visible:ring-0 w-sm"
         />
 
         <div className="relative group">
@@ -42,7 +51,7 @@ const NavBar = (props: Props) => {
         <div className="flex flex-col gap-2 items-end">
           <Button
             type="button"
-            className="bg-transparent h-10 transition-all duration-300 group cursor-pointer"
+            className="bg-transparent hover:bg-transparent h-10 transition-all duration-300 group cursor-pointer"
           >
             <div className="flex items-center justify-between gap-3">
               <Avatar className="-ml-1">
@@ -57,15 +66,6 @@ const NavBar = (props: Props) => {
                 Gabriel Reyes
               </span>
             </div>
-          </Button>
-
-          <Button
-            type="button"
-            className="bg-violet-950 group w-auto overflow-hidden duration-500 hover:bg-violet-900 transition-all text-neutral-100 shadow-none cursor-pointer"
-          >
-            <span className="text-neutral-300 transition-colors duration-300 group-hover:text-white">
-              + New Task
-            </span>
           </Button>
         </div>
       </div>

@@ -1,6 +1,7 @@
 import React from "react";
 import SideBar from "../SideBar/SideBar";
 import NavBar from "../NavBar/NavBar";
+import { Card } from "@/components/ui/card";
 
 interface Props {}
 
@@ -13,7 +14,9 @@ const TasksPage = (props: Props) => {
         <NavBar />
 
         {/* MainContent */}
-        <div className="bg-neutral-800 rounded-lg m-5">MAIN CONTENT</div>
+        <div className="bg-black rounded-lg m-5">
+          <Card></Card>
+        </div>
       </div>
     </div>
   );
