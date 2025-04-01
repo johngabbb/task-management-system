@@ -6,8 +6,69 @@ import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import wolfLogo from "../../../imgs/wolf-logo.png";
 import { List, ListCheck, ListX, ListCollapse } from "lucide-react";
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableFooter,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 
 interface Props {}
+
+const tasks = [
+  {
+    ticketNum: "HT-1823",
+    taskName: "[3Shape 5.0.0] Create dashboard for the clients to view cases.",
+    status: "In Progress",
+    priority: "Medium",
+    team: "Gab",
+    createdAt: "2hours ago",
+  },
+  {
+    ticketNum: "HT-1824",
+    taskName: "[SkyFetch] Backend development. Create API for login integration.",
+    status: "To do",
+    priority: "Medium",
+    team: "Max",
+    createdAt: "2hours ago",
+  },
+  {
+    ticketNum: "HT-1825",
+    taskName: "[Dashboard page] Create dashboard for tasks overview.",
+    status: "In Progress",
+    priority: "Medium",
+    team: "Hunter",
+    createdAt: "2hours ago",
+  },
+  {
+    ticketNum: "HT-1826",
+    taskName: "[HunterTracker1.0 - Task Page] Create Tasks page for tasks list.",
+    status: "In Progress",
+    priority: "Medium",
+    team: "Max",
+    createdAt: "2hours ago",
+  },
+  {
+    ticketNum: "HT-1827",
+    taskName: "[Beta] Create dashboard for the clients to view cases.",
+    status: "Completed",
+    priority: "Medium",
+    team: "Pamkin",
+    createdAt: "2hours ago",
+  },
+  {
+    ticketNum: "HT-1828",
+    taskName: "[MaximusHunter] Feed and walk the dogs.",
+    status: "Backlog",
+    priority: "Medium",
+    team: "Gab",
+    createdAt: "2hours ago",
+  },
+];
 
 const Dashboard = (props: Props) => {
   const [activePage, setActivePage] = useState<string>("dashboard");
@@ -57,7 +118,7 @@ const Dashboard = (props: Props) => {
           </div>
 
           {/* Main Content */}
-          <div className="bg-neutral-800 gap-2">
+          <div className="bg-neutral-800">
             <div className="flex flex-wrap items-stretch gap-3 p-10">
               <Card className="flex-1 min-w-[250px] bg-neutral-900 border-1 border-neutral-700 text-white p-5">
                 <div className="flex items-center justify-between w-full">
@@ -104,7 +165,55 @@ const Dashboard = (props: Props) => {
               </Card>
             </div>
 
-            <div>TEST</div>
+            <div className="pl-10 pr-10">
+              <div className="bg-neutral-900 border-1 rounded-lg border-neutral-700 overflow-hidden">
+                <Table className="">
+                  <TableHeader className="">
+                    <TableRow className="border-b border-neutral-700 hover:bg-neutral-800">
+                      <TableHead className="w-[100px] text-neutral-300 text-[15px]">Task</TableHead>
+                      <TableHead className="flex-1 text-neutral-300 text-[15px]">Title</TableHead>
+                      <TableHead className="w-[150px] text-neutral-300 text-[15px]">
+                        Status
+                      </TableHead>
+                      <TableHead className="w-[150px] text-neutral-300 text-[15px]">
+                        Priority
+                      </TableHead>
+                      <TableHead className="w-[200px] text-neutral-300 text-[15px]">Team</TableHead>
+                      <TableHead className="w-[200px] text-neutral-300 text-[15px]">
+                        Created At
+                      </TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {tasks.map((task) => (
+                      <TableRow
+                        key={task.ticketNum}
+                        className="group border-b border-neutral-700 hover:bg-neutral-800 transition-colors duration-200"
+                      >
+                        <TableCell className="w-[100px] text-neutral-400 group-hover:text-white transition-colors duration-200">
+                          {task.ticketNum}
+                        </TableCell>
+                        <TableCell className="flex-1 text-neutral-400 group-hover:text-white transition-colors duration-200">
+                          {task.taskName}
+                        </TableCell>
+                        <TableCell className="w-[150px] text-neutral-400 group-hover:text-white transition-colors duration-200">
+                          {task.status}
+                        </TableCell>
+                        <TableCell className="w-[150px] text-neutral-400 group-hover:text-white transition-colors duration-200">
+                          {task.priority}
+                        </TableCell>
+                        <TableCell className="w-[200px] text-neutral-400 group-hover:text-white transition-colors duration-200">
+                          {task.team}
+                        </TableCell>
+                        <TableCell className="w-[200px] text-neutral-400 group-hover:text-white transition-colors duration-200">
+                          {task.createdAt}
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </div>
+            </div>
           </div>
         </div>
       </div>
