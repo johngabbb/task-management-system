@@ -22,30 +22,32 @@ const LoginPage = ({ setIsAuthenticated }: Props) => {
   );
 
   return (
-    <div className="h-full bg-inherit flex items-center justify-center min-w-[600px] min-h-[575px]">
-      <div className="w-full max-w-4xl rounded-2xl overflow-hidden">
-        <div className="flex flex-wrap relative">
-          <div
-            className={`flex absolute top-0 transition-transform duration-500 ease-in-out ${
-              signUpActive ? "translate-x-0" : "translate-x-full"
-            }`}
-          >
-            {ImageCard}
-            {<SignUpForm setSignUpActive={setSignUpActive} />}
-          </div>
+    <div className="bg-gradient-to-b from-neutral-700 via-neutral-950 to-neutral-950 h-screen overflow-auto">
+      <div className="h-full bg-inherit flex items-center justify-center min-w-[600px] min-h-[575px]">
+        <div className="w-full max-w-4xl rounded-2xl overflow-hidden">
+          <div className="flex flex-wrap relative">
+            <div
+              className={`flex absolute top-0 transition-transform duration-500 ease-in-out ${
+                signUpActive ? "translate-x-0" : "translate-x-full"
+              }`}
+            >
+              {ImageCard}
+              {<SignUpForm setSignUpActive={setSignUpActive} />}
+            </div>
 
-          <div
-            className={`flex transition-transform duration-500 ease-in-out ${
-              signUpActive ? "translate-x-full" : "translate-x-0"
-            }`}
-          >
-            {
-              <LoginForm
-                setSignUpActive={setSignUpActive}
-                setIsAuthenticated={setIsAuthenticated}
-              />
-            }
-            {ImageCard}
+            <div
+              className={`flex transition-transform duration-500 ease-in-out ${
+                signUpActive ? "translate-x-full" : "translate-x-0"
+              }`}
+            >
+              {
+                <LoginForm
+                  setSignUpActive={setSignUpActive}
+                  setIsAuthenticated={setIsAuthenticated}
+                />
+              }
+              {ImageCard}
+            </div>
           </div>
         </div>
       </div>
