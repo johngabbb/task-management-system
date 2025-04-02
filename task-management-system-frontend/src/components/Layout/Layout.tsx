@@ -25,7 +25,7 @@ const Layout = (props: Props) => {
         </div>
 
         {/* Main Content */}
-        <div className="bg-neutral-800 h-full flex flex-col overflow-auto">
+        <div className="bg-neutral-800 h-full">
           <Outlet />
         </div>
       </div>
