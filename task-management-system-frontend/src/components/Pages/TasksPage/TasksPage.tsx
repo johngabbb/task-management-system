@@ -1,6 +1,6 @@
 import { useState } from "react";
-import NavBar from "../NavBar/NavBar";
-import SideBar from "../SideBar/SideBar";
+import NavBar from "../../Layout/NavBar";
+import SideBar from "../../Layout/SideBar";
 import { useNavigate } from "react-router-dom";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -31,7 +31,19 @@ interface Props {}
 const TasksPage = (props: Props) => {
   return (
     <>
-      <div>TASK PAGE</div>
+      <div className="h-full p-6 flex flex-col gap-2">
+        <div className="flex justify-between">
+          <div>
+            <Button>Bord View</Button>
+            <Button>List View</Button>
+          </div>
+          <div>
+            <Button>New Task</Button>
+          </div>
+        </div>
+
+        <div></div>
+      </div>
     </>
   );
 };

@@ -47,16 +47,16 @@ const Dashboard = (props: Props) => {
           <TaskSummary />
         </div>
 
-        <div className="bg-neutral-900 border-1 rounded-lg border-neutral-700 overflow-hidden p-6 mb-2">
+        <div className="bg-neutral-900 border-1 rounded-lg border-neutral-700 overflow-auto p-6 mb-2">
           <TaskOverview />
         </div>
 
         <div className="grid grid-cols-2 gap-3">
-          <div className="bg-neutral-900 border-1 rounded-lg border-neutral-700 overflow-hidden p-6">
+          <div className="bg-neutral-900 border-1 rounded-lg border-neutral-700 overflow-auto p-6">
             <TeamStatus />
           </div>
 
-          <div className="bg-neutral-900 border-1 rounded-lg border-neutral-700 overflow-hidden p-6">
+          <div className="bg-neutral-900 border-1 rounded-lg border-neutral-700 overflow-auto p-6">
             <Forum />
           </div>
         </div>

@@ -1,14 +1,24 @@
-import SideBar from "../Pages/SideBar/SideBar";
-import NavBar from "../Pages/NavBar/NavBar";
-import { useState } from "react";
-import { useNavigate, Outlet } from "react-router-dom";
+import SideBar from "./SideBar";
+import NavBar from "./NavBar";
+import { useState, useEffect } from "react";
+import { useNavigate, Outlet, useLocation } from "react-router-dom";
 
 interface Props {}
 
 const Layout = (props: Props) => {
-  const [activePage, setActivePage] = useState<string>("dashboard");
+  const location = useLocation();
+  const [activePage, setActivePage] = useState<string>(
+    location.pathname.substring(1) || "dashboard"
+  );
 
   const navigate = useNavigate();
+
+  // Update activePage whenever location changes
+  useEffect(() => {
+    const path = location.pathname.substring(1) || "dashboard";
+    console.log(path);
+    setActivePage(path);
+  }, [location]);
 
   const movePage = (page: string) => {
     navigate(`/${page}`);

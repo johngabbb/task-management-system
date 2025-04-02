@@ -10,7 +10,7 @@ import {
   LogOut,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import wolfLogo from "../../../imgs/wolf-logo.png";
+import wolfLogo from "../../assets/wolf-logo.png";
 
 interface Props {
   movePage: (e: string) => void;
