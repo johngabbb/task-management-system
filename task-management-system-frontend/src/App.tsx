@@ -2,28 +2,34 @@ import { useState } from "react";
 import "./App.css";
 import Dashboard from "./components/Pages/Dashboard/Dashboard";
 import LoginPage from "./components/Pages/LoginPage/LoginPage";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate, useNavigate } from "react-router-dom";
+import TasksPage from "./components/Pages/TasksPage/TasksPage";
+import SideBar from "./components/Pages/SideBar/SideBar";
+import NavBar from "./components/Pages/NavBar/NavBar";
+import Layout from "./components/Layout/Layout";
+import BacklogPage from "./components/Pages/BacklogPage/BacklogPage";
+import TeamPage from "./components/Pages/TeamPage/TeamPage";
+import ProjectsPage from "./components/Pages/ProjectsPage/ProjectsPage";
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
 
   return (
     <BrowserRouter>
-      <div className="bg-gradient-to-b from-neutral-700 via-neutral-950 to-neutral-950 h-screen overflow-auto">
-        <Routes>
-          <Route path="/login" element={<LoginPage setIsAuthenticated={setIsAuthenticated} />} />
-
+      <Routes>
+        <Route path="/login" element={<LoginPage setIsAuthenticated={setIsAuthenticated} />} />
+        <Route element={<Layout />}>
           <Route path="/dashboard" element={<Dashboard />}></Route>
 
-          <Route path="/tasks" element={<Dashboard />}></Route>
+          <Route path="/tasks" element={<TasksPage />}></Route>
 
-          <Route path="/backlog" element={<Dashboard />}></Route>
+          <Route path="/backlog" element={<BacklogPage />}></Route>
 
-          <Route path="/team" element={<Dashboard />}></Route>
+          <Route path="/team" element={<TeamPage />}></Route>
 
-          <Route path="/projects" element={<Dashboard />}></Route>
-        </Routes>
-      </div>
+          <Route path="/projects" element={<ProjectsPage />}></Route>
+        </Route>
+      </Routes>
     </BrowserRouter>
   );
 }
