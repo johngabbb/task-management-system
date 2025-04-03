@@ -123,7 +123,7 @@ const SideBar = ({ movePage, activePage }: Props) => {
               </div>
             </Button>
 
-            <div className="flex flex-col gap-5 mt-auto">
+            <div className="flex flex-col gap-5 mt-10">
               <Button
                 className={`${getButtonClass("settings")} group`}
                 type="button"
