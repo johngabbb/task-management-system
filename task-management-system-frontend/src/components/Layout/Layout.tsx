@@ -26,17 +26,19 @@ const Layout = (props: Props) => {
   };
 
   return (
-    <div className="h-screen w-full grid grid-cols-[300px_1fr] bg-neutral-900 text-white overflow-hidden">
-      <SideBar movePage={movePage} activePage={activePage} />
+    <div className="h-screen w-full items-center overflow-auto">
+      <div className="h-full grid grid-cols-[300px_1fr] bg-neutral-900 text-white overflow-hidden">
+        <SideBar movePage={movePage} activePage={activePage} />
 
-      <div className="grid grid-rows-[80px_1fr]">
-        <div className="flex items-center justify-center border-b border-neutral-700">
-          <NavBar activePage={activePage} />
-        </div>
+        <div className="grid grid-rows-[80px_1fr]">
+          <div className="flex items-center justify-center border-b border-neutral-700">
+            <NavBar activePage={activePage} />
+          </div>
 
-        {/* Main Content */}
-        <div className="bg-neutral-800 h-full">
-          <Outlet />
+          {/* Main Content */}
+          <div className="bg-neutral-800 h-full">
+            <Outlet />
+          </div>
         </div>
       </div>
     </div>

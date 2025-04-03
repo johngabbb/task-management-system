@@ -33,12 +33,18 @@ const TasksPage = (props: Props) => {
     <>
       <div className="h-full p-6 flex flex-col gap-2">
         <div className="flex justify-between">
-          <div>
-            <Button>Bord View</Button>
-            <Button>List View</Button>
+          <div className="flex gap-5">
+            <Button className="border-neutral-700 bg-neutral-900 border-1 hover:bg-neutral-800 cursor-pointer text-neutral-400 hover:text-white transition-colors">
+              Board View
+            </Button>
+            <Button className="border-neutral-700 bg-neutral-900 border-1 hover:bg-neutral-800 cursor-pointer text-neutral-400 hover:text-white transition-colors">
+              List View
+            </Button>
           </div>
           <div>
-            <Button>New Task</Button>
+          <Button className="border-neutral-700 bg-neutral-900 border-1 hover:bg-neutral-800 cursor-pointer text-neutral-400 hover:text-white transition-colors">
+            + New Task
+          </Button>
           </div>
         </div>
 
