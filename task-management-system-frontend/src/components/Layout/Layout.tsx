@@ -40,10 +40,10 @@ const Layout = (props: Props) => {
               </div>
 
               {/* Main Content */}
-              <div className="bg-neutral-800  h-[calc(100vh-80px)]">
-                <ScrollArea className="h-full w-full">
-                  <Outlet />
-                </ScrollArea>
+              <div className="bg-neutral-800">
+                {/* <ScrollArea className="h-full w-full"> */}
+                <Outlet />
+                {/* </ScrollArea> */}
               </div>
             </div>
           </div>
