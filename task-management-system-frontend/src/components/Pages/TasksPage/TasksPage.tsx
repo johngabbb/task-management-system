@@ -1,4 +1,4 @@
-import { Card } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardFooter, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -27,6 +27,7 @@ import {
   SelectContent,
 } from "@/components/ui/select";
 import CreateTask from "./CreateTask/CreateTask";
+import TaskCard from "./TaskCard/TaskCard";
 
 interface Props {}
 
@@ -80,37 +81,23 @@ const TasksPage = (props: Props) => {
             <div className="pr-5">
               <div className="grid grid-cols-4 gap-10">
                 <div className="flex flex-col gap-5 h-full">
-                  <Card className="bg-neutral-900 border-neutral-700 text-white p-6 h-50 overflow-auto">
-                    Task 1
-                  </Card>
-                  <Card className={cardClassName}>Task 2</Card>
-                  <Card className={cardClassName}>Task 3</Card>
-                  <Card className={cardClassName}>Task 4</Card>
-                  <Card className={cardClassName}>Task 5</Card>
+                  <TaskCard />
+                  <TaskCard />
                 </div>
 
                 <div className="flex flex-col gap-5 h-full">
-                  <Card className={cardClassName}>Task 1</Card>
-                  <Card className={cardClassName}>Task 2</Card>
-                  <Card className={cardClassName}>Task 3</Card>
-                  <Card className={cardClassName}>Task 4</Card>
-                  <Card className={cardClassName}>Task 5</Card>
+                  <TaskCard />
+                  <TaskCard />
                 </div>
 
                 <div className="flex flex-col gap-5 h-full">
-                  <Card className={cardClassName}>Task 1</Card>
-                  <Card className={cardClassName}>Task 2</Card>
-                  <Card className={cardClassName}>Task 3</Card>
-                  <Card className={cardClassName}>Task 4</Card>
-                  <Card className={cardClassName}>Task 5</Card>
+                  <TaskCard />
                 </div>
 
                 <div className="flex flex-col gap-5 h-full">
-                  <Card className={cardClassName}>Task 1</Card>
-                  <Card className={cardClassName}>Task 2</Card>
-                  <Card className={cardClassName}>Task 3</Card>
-                  <Card className={cardClassName}>Task 4</Card>
-                  <Card className={cardClassName}>Task 5</Card>
+                  <TaskCard />
+                  <TaskCard />
+                  <TaskCard />
                 </div>
               </div>
             </div>
