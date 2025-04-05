@@ -27,6 +27,7 @@ import TaskOverview from "./TaskOverview/TaskOverview";
 import TeamStatus from "./TeamStatus/TeamStatus";
 import Forum from "./Forum/Forum";
 import TaskSummary from "./TaskSummary/TaskSummary";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 interface Props {}
 
@@ -42,24 +43,32 @@ const Dashboard = (props: Props) => {
 
   return (
     <>
-      <div className="grid grid-cols-1 p-6 gap-3 h-full">
-        <div>
-          <TaskSummary />
-        </div>
+      <div className="h-[calc(100vh-80px)]">
+        <ScrollArea className="h-full w-full">
+          <div className="flex flex-col p-6 gap-5">
+            <div>
+              <TaskSummary />
+            </div>
 
-        <div className="bg-neutral-900 border-1 rounded-lg border-neutral-700 overflow-auto p-6 mb-2">
-          <TaskOverview />
-        </div>
+            <div className="bg-neutral-900 border-1 rounded-lg border-neutral-700 p-6">
+              <TaskOverview />
+            </div>
 
-        <div className="grid grid-cols-2 gap-3">
-          <div className="bg-neutral-900 border-1 rounded-lg border-neutral-700 overflow-auto p-6">
-            <TeamStatus />
+            <div className="flex flex-row gap-3">
+              <div className="flex-1 bg-neutral-900 border-1 rounded-lg border-neutral-700 p-6">
+                <TeamStatus />
+              </div>
+
+              <div className="flex-1 bg-neutral-900 border-1 rounded-lg border-neutral-700 p-6">
+                <Forum />
+              </div>
+            </div>
+
+            <div className="bg-neutral-900 border-1 rounded-lg border-neutral-700 p-6">
+              <TaskOverview />
+            </div>
           </div>
-
-          <div className="bg-neutral-900 border-1 rounded-lg border-neutral-700 overflow-auto p-6">
-            <Forum />
-          </div>
-        </div>
+        </ScrollArea>
       </div>
     </>
   );

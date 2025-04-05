@@ -6,7 +6,7 @@ type Props = {};
 const TaskSummary = (props: Props) => {
   return (
     <>
-      <div className="flex flex-wrap items-stretch gap-3 shrink-0">
+      <div className="flex gap-3 items-stretch flex-wrap shrink-0">
         <Card className="flex-1 min-w-[250px] bg-neutral-900 border-1 border-neutral-700 text-white p-6">
           <div className="flex items-center justify-between w-full">
             <div>
