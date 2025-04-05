@@ -13,59 +13,66 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import { Input } from "@/components/ui/input";
+import { z } from "zod";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/ui/form";
+import { Textarea } from "@/components/ui/textarea";
+import {
+  Select,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+} from "@/components/ui/select";
+import CreateTask from "./CreateTask/CreateTask";
 
 interface Props {}
 
-const cardClassName =
-  "bg-neutral-900 border-neutral-700 text-white p-6 h-50 overflow-auto";
-
 const TasksPage = (props: Props) => {
+  const [activeView, setActiveView] = useState<"board" | "list">("board");
+
+  const handleActiveView = (view: "board" | "list") => {
+    setActiveView(view);
+  };
+
+  const cardClassName = "bg-neutral-900 border-neutral-700 text-white p-6 h-50 overflow-auto";
+
   return (
     <>
       <div className="h-full p-6 flex flex-col gap-10">
         <div className="flex justify-between">
           <div className="flex gap-5">
-            <Button className="border-neutral-700 bg-neutral-900 border-1 hover:bg-neutral-800 cursor-pointer text-neutral-400 hover:text-white transition-colors">
+            <Button
+              type="button"
+              className={`border-neutral-700 bg-neutral-900 border-1 hover:bg-neutral-900 cursor-pointer hover:text-white ${
+                activeView === "board" ? "text-white" : "text-neutral-400"
+              } transition-colors`}
+              onClick={() => handleActiveView("board")}
+            >
               Board View
             </Button>
-            <Button className="border-neutral-700 bg-neutral-900 border-1 hover:bg-neutral-800 cursor-pointer text-neutral-400 hover:text-white transition-colors">
+            <Button
+              type="button"
+              className={`border-neutral-700 bg-neutral-900 border-1 hover:bg-neutral-900 cursor-pointer hover:text-white ${
+                activeView === "list" ? "text-white" : "text-neutral-400"
+              } transition-colors`}
+              onClick={() => handleActiveView("list")}
+            >
               List View
             </Button>
           </div>
           <div>
-            <AlertDialog>
-              <AlertDialogTrigger asChild>
-                <Button className="border-neutral-700 bg-neutral-900 border-1 hover:bg-neutral-800 cursor-pointer text-neutral-400 hover:text-white transition-colors">
-                  + New Task
-                </Button>
-              </AlertDialogTrigger>
-              <AlertDialogContent>
-                <AlertDialogHeader>
-                  <AlertDialogTitle></AlertDialogTitle>
-                  <AlertDialogDescription></AlertDialogDescription>
-                </AlertDialogHeader>
-                <AlertDialogFooter>
-                  <AlertDialogCancel>Cancel</AlertDialogCancel>
-                  <AlertDialogAction>Continue</AlertDialogAction>
-                </AlertDialogFooter>
-              </AlertDialogContent>
-            </AlertDialog>
+            <CreateTask />
           </div>
         </div>
 
         <div className="flex flex-row pr-5">
-          <div className="flex-1 text-neutral-400 text-lg flex justify-center">
-            Pending
-          </div>
-          <div className="flex-1 text-neutral-400 text-lg flex justify-center">
-            In Progress
-          </div>
-          <div className="flex-1 text-neutral-400 text-lg flex justify-center">
-            QA
-          </div>
-          <div className="flex-1 text-neutral-400 text-lg flex justify-center">
-            Completed
-          </div>
+          <div className="flex-1 text-neutral-400 text-lg flex justify-center">Pending</div>
+          <div className="flex-1 text-neutral-400 text-lg flex justify-center">In Progress</div>
+          <div className="flex-1 text-neutral-400 text-lg flex justify-center">QA</div>
+          <div className="flex-1 text-neutral-400 text-lg flex justify-center">Completed</div>
         </div>
 
         <div className="h-[calc(100vh-280px)]">
