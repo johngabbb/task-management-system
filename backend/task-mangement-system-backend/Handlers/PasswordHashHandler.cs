@@ -87,7 +87,6 @@ namespace task_mangement_system_backend.Handlers
             return CryptographicOperations.FixedTimeEquals(expectedHash, actualHash);
         }
 
-        // Helper methods to handle network-byte-order conversion
         private static void WriteNetworkByteOrder(byte[] buffer, int offset, uint value)
         {
             buffer[offset + 0] = (byte)(value >> 24);
