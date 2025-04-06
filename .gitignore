@@ -83,7 +83,7 @@ _ReSharper*/
 **/*.DotSettings.user
 
 # Entity Framework Migrations (optional)
-Migrations/
+# Migrations/
 
 # NuGet packages
 *.nupkg
