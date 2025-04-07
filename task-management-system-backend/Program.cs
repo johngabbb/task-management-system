@@ -1,8 +1,10 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using task_mangement_system_backend.Data;
+using task_mangement_system_backend.Models.Entities;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -33,6 +35,8 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 //    };
 //});
 //builder.Services.AddAuthorization();
+
+builder.Services.AddScoped<PasswordHasher<Account>>();
 
 var app = builder.Build();
 

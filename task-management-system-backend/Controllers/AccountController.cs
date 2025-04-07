@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using task_mangement_system_backend.Data;
@@ -12,10 +13,12 @@ namespace task_mangement_system_backend.Controllers
     public class AccountController : ControllerBase
     {
         private readonly AppDbContext _dbContext;
+        private readonly PasswordHasher<Account> _passwordHasher;
 
-        public AccountController(AppDbContext dbCOntext)
+        public AccountController(AppDbContext dbCOntext, PasswordHasher<Account> passwordHasher)
         {
             _dbContext = dbCOntext;
+            _passwordHasher = passwordHasher;
         }
 
         [HttpGet]
@@ -40,7 +43,7 @@ namespace task_mangement_system_backend.Controllers
                 return BadRequest("Invalid Request");
             }
 
-            account.Password = PasswordHashHandler.HashPassword(account.Password);
+            account.Password = _passwordHasher.HashPassword(account, account.Password);
 
             await _dbContext.Accounts.AddAsync(account);
             await _dbContext.SaveChangesAsync();
