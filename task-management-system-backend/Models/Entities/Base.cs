@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 
-namespace task_mangement_system_backend.Models.Entities
+namespace task_management_system_backend.Models.Entities
 {
     public class Base
     {

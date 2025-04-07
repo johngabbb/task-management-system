@@ -6,8 +6,8 @@ using Microsoft.OpenApi.Models;
 using System.Text;
 using task_management_system_backend.Handlers;
 using task_management_system_backend.Services;
-using task_mangement_system_backend.Data;
-using task_mangement_system_backend.Models.Entities;
+using task_management_system_backend.Data;
+using task_management_system_backend.Models.Entities;
 
 var builder = WebApplication.CreateBuilder(args);
 
