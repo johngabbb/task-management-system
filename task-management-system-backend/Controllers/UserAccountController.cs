@@ -3,10 +3,10 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using task_mangement_system_backend.Data;
-using task_mangement_system_backend.Models.Entities;
+using task_management_system_backend.Data;
+using task_management_system_backend.Models.Entities;
 
-namespace task_mangement_system_backend.Controllers
+namespace task_management_system_backend.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

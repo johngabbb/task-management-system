@@ -5,8 +5,8 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using task_management_system_backend.Models.Api;
-using task_mangement_system_backend.Data;
-using task_mangement_system_backend.Models.Entities;
+using task_management_system_backend.Data;
+using task_management_system_backend.Models.Entities;
 
 namespace task_management_system_backend.Services
 {
