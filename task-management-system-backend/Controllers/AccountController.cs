@@ -1,87 +1,31 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using task_mangement_system_backend.Data;
-using task_mangement_system_backend.Handlers;
-using task_mangement_system_backend.Models.Entities;
+using task_management_system_backend.Models.Api;
+using task_management_system_backend.Services;
 
-namespace task_mangement_system_backend.Controllers
+namespace task_management_system_backend.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
     public class AccountController : ControllerBase
     {
-        private readonly AppDbContext _dbContext;
-        private readonly PasswordHasher<Account> _passwordHasher;
+        private readonly JwtService _jwtService;
 
-        public AccountController(AppDbContext dbCOntext, PasswordHasher<Account> passwordHasher)
+        public AccountController(JwtService jwtService)
         {
-            _dbContext = dbCOntext;
-            _passwordHasher = passwordHasher;
+            _jwtService = jwtService;
         }
 
-        [HttpGet]
-        public async Task<List<Account>> Get()
+        [AllowAnonymous]
+        [HttpPost("Login")]
+        public async Task<ActionResult<LoginResponseModel>> Login(LoginRequestModel request)
         {
-            return await _dbContext.Accounts.ToListAsync();
-        }
+            var result = await _jwtService.Authenticate(request);
+            if (result is null)
+                return Unauthorized();
 
-        [HttpGet("{id}")]
-        public async Task<Account?> GetById(Guid id)
-        {
-            return await _dbContext.Accounts.FirstOrDefaultAsync(a => a.Id == id);
-        }
-
-        [HttpPost]
-        public async Task<ActionResult> Create([FromBody] Account account)
-        {
-            if (string.IsNullOrWhiteSpace(account.Username) ||
-                string.IsNullOrWhiteSpace(account.Password) ||
-                string.IsNullOrWhiteSpace(account.FullName))
-            {
-                return BadRequest("Invalid Request");
-            }
-
-            account.Password = _passwordHasher.HashPassword(account, account.Password);
-
-            await _dbContext.Accounts.AddAsync(account);
-            await _dbContext.SaveChangesAsync();
-
-            return CreatedAtAction(nameof(GetById), new { id = account.Id }, account);
-        }
-
-        [HttpPut]
-        public async Task<ActionResult> Update([FromBody] Account account)
-        {
-            if (account.Id == Guid.Empty ||
-                string.IsNullOrWhiteSpace(account.Username) ||
-                string.IsNullOrWhiteSpace(account.Password) ||
-                string.IsNullOrWhiteSpace(account.FullName))
-            {
-                return BadRequest("Invalid Request");
-            }
-
-            account.Password = PasswordHashHandler.HashPassword(account.Password);
-            _dbContext.Accounts.Update(account);
-            await _dbContext.SaveChangesAsync();
-
-            return Ok();
-        }
-
-        [HttpDelete("{id}")]
-        public async Task<ActionResult> Delete(Guid id)
-        {
-            var account = await GetById(id);
-            if (account is null)
-            {
-                return NotFound();
-            }
-
-            _dbContext.Accounts.Remove(account);
-            await _dbContext.SaveChangesAsync();
-
-            return Ok();
+            return result;
         }
     }
 }
