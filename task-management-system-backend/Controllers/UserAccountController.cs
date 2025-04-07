@@ -10,7 +10,7 @@ namespace task_management_system_backend.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+    //[Authorize]
     public class UserAccountController : ControllerBase
     {
         private readonly AppDbContext _dbContext;

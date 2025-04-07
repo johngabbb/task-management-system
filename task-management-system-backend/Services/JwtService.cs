@@ -49,6 +49,8 @@ namespace task_management_system_backend.Services
                 return null;
             }
 
+            //var 
+
             var issuer = _configuration["JwtConfig:Issuer"];
             var audience = _configuration["JwtConfig:Audience"];
             var key = _configuration["JwtConfig:Key"];
