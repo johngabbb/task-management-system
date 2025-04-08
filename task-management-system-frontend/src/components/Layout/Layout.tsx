@@ -2,7 +2,6 @@ import SideBar from "./SideBar";
 import NavBar from "./NavBar";
 import { useState, useEffect } from "react";
 import { useNavigate, Outlet, useLocation } from "react-router-dom";
-import { ScrollArea } from "../ui/scroll-area";
 
 interface Props {}
 
@@ -41,9 +40,7 @@ const Layout = (props: Props) => {
 
               {/* Main Content */}
               <div className="bg-neutral-800">
-                {/* <ScrollArea className="h-full w-full"> */}
                 <Outlet />
-                {/* </ScrollArea> */}
               </div>
             </div>
           </div>
