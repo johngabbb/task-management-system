@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using task_management_system_backend.Models.Entities;
 
 namespace task_management_system_backend.Data
@@ -41,6 +42,17 @@ namespace task_management_system_backend.Data
                 {
                     Id = new Guid("4a8dcd7c-df91-4bfc-b0c8-94d0b9e0e684"),
                     Name = "User"
+                }
+            );
+
+            modelBuilder.Entity<Account>().HasData(
+                new Account
+                {
+                    Id = new Guid("8dd9e73e-217a-4208-a031-7ac5c9551215"),
+                    FullName = "System Administrator",
+                    Username = "admin",
+                    Password = "AQAAAAIAAYagAAAAEOgHEgRI4ayuckxnvZ4rBSJRYvLNtIGJviS19r1s28ZE/HADCBgbPpDUgQ0cwkqjKw==",
+                    Role = "Admin"
                 }
             );
         }

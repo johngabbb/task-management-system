@@ -5,6 +5,6 @@
         public string? AccessToken { get; set; }
         public string? Username { get; set; }
         public int ExpiresIn { get; set; }
-        public List<string> Roles { get; set; } = new List<string>();
+        public string? Role { get; set; } 
     }
 }

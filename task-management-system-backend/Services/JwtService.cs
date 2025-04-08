@@ -44,25 +44,32 @@ namespace task_management_system_backend.Services
                 request.Password
             );
 
-            if (verificationResult == PasswordVerificationResult.Failed )
+            if (verificationResult == PasswordVerificationResult.Failed)
             {
                 return null;
             }
 
-            //var 
+            var userRole = await _appDbContext.UserRoles
+                .Where(x => x.AccountId == userAccount.Id)
+                .Select(x => x.Role.Name)
+                .FirstOrDefaultAsync();
 
             var issuer = _configuration["JwtConfig:Issuer"];
             var audience = _configuration["JwtConfig:Audience"];
             var key = _configuration["JwtConfig:Key"];
             var tokenValidityInMins = _configuration.GetValue<int>("JwtConfig:TokenValidityInMins");
             var tokenExpiriyTimeStamp = DateTime.UtcNow.AddMinutes(tokenValidityInMins);
-            
+
+            var claims = new List<Claim>
+            {
+                new Claim(JwtRegisteredClaimNames.Name, request.Username),
+                new Claim(JwtRegisteredClaimNames.Sub, userAccount.Id.ToString()),
+                new Claim(ClaimTypes.Role, userRole)
+            };
+
             var tokenDescriptor = new SecurityTokenDescriptor
             {
-                Subject = new ClaimsIdentity(new[]
-                {
-                    new Claim(JwtRegisteredClaimNames.Name, request.Username)
-                }),
+                Subject = new ClaimsIdentity(claims),
                 Expires = tokenExpiriyTimeStamp,
                 Issuer = issuer,
                 Audience = audience,
@@ -78,7 +85,8 @@ namespace task_management_system_backend.Services
             {
                 AccessToken = accessToken,
                 Username = userAccount.Username,
-                ExpiresIn = (int)tokenExpiriyTimeStamp.Subtract(DateTime.UtcNow).TotalSeconds
+                ExpiresIn = (int)tokenExpiriyTimeStamp.Subtract(DateTime.UtcNow).TotalSeconds,
+                Role = userRole
             };
         }
     }
