@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardTitle, CardDescription } from "@/components/ui/card";
 import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/ui/form";
@@ -7,14 +8,18 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "@/hooks/AuthContext";
 
 interface Props {
   setSignUpActive: (e: boolean) => void;
-  setIsAuthenticated: (e: boolean) => void;
 }
 
-const LoginForm = ({ setSignUpActive, setIsAuthenticated }: Props) => {
+const LoginForm = ({ setSignUpActive }: Props) => {
   const navigate = useNavigate();
+  const { login } = useAuth();
+
+  const [error, setError] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const formSchema = z.object({
     email: z.string().min(2, {
@@ -23,6 +28,7 @@ const LoginForm = ({ setSignUpActive, setIsAuthenticated }: Props) => {
     password: z.string().min(5, {
       message: "Password must be at least 5 characters.",
     }),
+    rememberMe: z.boolean().optional(),
   });
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -30,13 +36,27 @@ const LoginForm = ({ setSignUpActive, setIsAuthenticated }: Props) => {
     defaultValues: {
       email: "",
       password: "",
+      rememberMe: false,
     },
   });
 
-  const onSubmit = (values: z.infer<typeof formSchema>) => {
-    setIsAuthenticated(true);
-    console.log(values);
-    navigate("/dashboard");
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    try {
+      setIsSubmitting(true);
+      setError(null);
+      const success = await login(values.email, values.password);
+
+      if (success) {
+        navigate("/dashboard");
+      } else {
+        setError("Invalid username or password. Please try again.");
+      }
+    } catch (err) {
+      setError("An error occurred. Please try again.");
+      console.error(err);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -114,8 +134,9 @@ const LoginForm = ({ setSignUpActive, setIsAuthenticated }: Props) => {
             <Button
               type="submit"
               className="w-full bg-black hover:bg-neutral-800 whitespace-nowrap"
+              disabled={isSubmitting}
             >
-              Sign in
+              {isSubmitting ? "Signing in..." : "Sign in"}
             </Button>
 
             <div className="flex items-center py-2">

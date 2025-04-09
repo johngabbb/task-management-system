@@ -1,12 +1,10 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import LoginForm from "./LoginForm/LoginForm";
 import SignUpForm from "./SignUpForm/SignUpForm";
 
-interface Props {
-  setIsAuthenticated: (e: boolean) => void;
-}
+interface Props {}
 
-const LoginPage = ({ setIsAuthenticated }: Props) => {
+const LoginPage = (props: Props) => {
   const [signUpActive, setSignUpActive] = useState<boolean>(false);
 
   const ImageCard = (
@@ -40,12 +38,7 @@ const LoginPage = ({ setIsAuthenticated }: Props) => {
                 signUpActive ? "translate-x-full" : "translate-x-0"
               }`}
             >
-              {
-                <LoginForm
-                  setSignUpActive={setSignUpActive}
-                  setIsAuthenticated={setIsAuthenticated}
-                />
-              }
+              {<LoginForm setSignUpActive={setSignUpActive} />}
               {ImageCard}
             </div>
           </div>
