@@ -21,19 +21,19 @@ namespace task_management_system_backend.Controllers
             _passwordHasher = passwordHasher;
         }
 
-        [HttpGet]
+        [HttpGet("getusers")]
         public async Task<List<Account>> Get()
         {
             return await _dbContext.Accounts.ToListAsync();
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("getbyid/{id}")]
         public async Task<Account?> GetById(Guid id)
         {
             return await _dbContext.Accounts.FirstOrDefaultAsync(a => a.Id == id);
         }
 
-        [HttpPost]
+        [HttpPost("create")]
         public async Task<ActionResult> Create([FromBody] Account account)
         {
             if (string.IsNullOrWhiteSpace(account.Username) ||
@@ -61,7 +61,7 @@ namespace task_management_system_backend.Controllers
             return CreatedAtAction(nameof(GetById), new { id = account.Id }, account);
         }
 
-        [HttpPut]
+        [HttpPut("update")]
         public async Task<ActionResult> Update([FromBody] Account account)
         {
             if (account.Id == Guid.Empty ||
@@ -79,7 +79,7 @@ namespace task_management_system_backend.Controllers
             return Ok();
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("delete/{id}")]
         public async Task<ActionResult> Delete(Guid id)
         {
             var account = await GetById(id);

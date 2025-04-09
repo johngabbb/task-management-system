@@ -18,7 +18,7 @@ namespace task_management_system_backend.Controllers
         }
 
         [AllowAnonymous]
-        [HttpPost("Login")]
+        [HttpPost("login")]
         public async Task<ActionResult<LoginResponseModel>> Login(LoginRequestModel request)
         {
             var result = await _jwtService.Authenticate(request);

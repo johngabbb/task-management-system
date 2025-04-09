@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using task_management_system_backend.Data;
 
@@ -11,9 +12,11 @@ using task_management_system_backend.Data;
 namespace task_management_system_backend.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250409083254_InitialCreate")]
+    partial class InitialCreate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -126,14 +129,6 @@ namespace task_management_system_backend.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("user_roles");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("7c233e47-2add-4fa3-9c65-bb5426a7dba7"),
-                            AccountId = new Guid("8dd9e73e-217a-4208-a031-7ac5c9551215"),
-                            RoleId = new Guid("1a36152c-268a-4a9a-bb50-1a8f29119b8c")
-                        });
                 });
 
             modelBuilder.Entity("task_management_system_backend.Models.Entities.UserRole", b =>
