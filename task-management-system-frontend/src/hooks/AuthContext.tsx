@@ -1,18 +1,20 @@
 import React, { createContext, ReactNode, useContext, useEffect, useState } from "react";
 import { authService } from "../api/api";
 import { useNavigate } from "react-router-dom";
+import { LoginRequest } from "@/components/types";
 
 interface User {
   id?: string;
   username: string;
   role: string;
+  expiresIn: number;
 }
 
 interface AuthContextType {
   user: User | null;
   isAuthenticated: boolean;
   isLoading: boolean;
-  login: (username: string, password: string) => Promise<boolean>;
+  login: (credentials: LoginRequest) => Promise<boolean>;
   logout: () => void;
   hasRole: (role: string) => boolean;
 }
@@ -35,16 +37,18 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     setIsLoading(false);
   }, []);
 
-  const login = async (username: string, password: string): Promise<boolean> => {
+  const login = async (credentials: LoginRequest): Promise<boolean> => {
     try {
       setIsLoading(true);
-      const response = await authService.login(username, password);
+
+      const response = await authService.login(credentials);
 
       if (response && response.accessToken) {
         localStorage.setItem("token", response.accessToken);
         const userData = {
           username: response.username,
           role: response.role,
+          expiresIn: response.expiresIn,
         };
         localStorage.setItem("user", JSON.stringify(userData));
 

@@ -1,3 +1,4 @@
+import { CreateUserRequest, LoginRequest, LoginResponse } from "@/components/types";
 import axios from "axios";
 
 const api = axios.create({
@@ -37,8 +38,22 @@ api.interceptors.response.use(
 );
 
 export const authService = {
-  login: async (username: string, password: string) => {
-    const response = await api.post("/Account/login", { username, password });
+  login: async (credentials: LoginRequest): Promise<LoginResponse> => {
+    const response = await api.post<LoginResponse>("/Account/login", credentials);
+    return response.data;
+  },
+};
+
+export const accountService = {
+  register: async (userInfo: CreateUserRequest) => {
+    const response = await api.post("UserAccount/create", userInfo);
+    return response.data;
+  },
+
+  existingUser: async (username: string): Promise<boolean> => {
+    const response = await api.get<boolean>("UserAccount/existinguser", {
+      params: { username },
+    });
     return response.data;
   },
 };

@@ -1,22 +1,21 @@
 // Auth types
 export interface LoginRequest {
-    email: string;
+    username: string;
     password: string;
   }
   
   export interface LoginResponse {
     accessToken: string;
-    email: string;
+    username: string;
     expiresIn: number;
     role: string;
   }
   
-  // User types
   export interface User {
     id: string;
     fullName: string;
     username: string;
-    password?: string; // Optional for security reasons
+    password?: string; 
     role: string;
   }
   

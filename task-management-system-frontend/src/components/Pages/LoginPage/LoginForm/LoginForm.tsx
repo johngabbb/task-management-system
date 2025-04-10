@@ -9,6 +9,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/AuthContext";
+import { LoginRequest } from "@/components/types";
 
 interface Props {
   setSignUpActive: (e: boolean) => void;
@@ -19,7 +20,7 @@ const LoginForm = ({ setSignUpActive }: Props) => {
   const { login } = useAuth();
 
   const [error, setError] = useState<string | null>(null);
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
   const formSchema = z.object({
     email: z.string().min(2, {
@@ -44,16 +45,22 @@ const LoginForm = ({ setSignUpActive }: Props) => {
     try {
       setIsSubmitting(true);
       setError(null);
-      const success = await login(values.email, values.password);
+
+      const credentials: LoginRequest = {
+        username: values.email,
+        password: values.password,
+      };
+
+      const success = await login(credentials);
 
       if (success) {
         navigate("/dashboard");
       } else {
         setError("Invalid username or password. Please try again.");
       }
-    } catch (err) {
+    } catch (error) {
       setError("An error occurred. Please try again.");
-      console.error(err);
+      console.error("Registration error:", error);
     } finally {
       setIsSubmitting(false);
     }
