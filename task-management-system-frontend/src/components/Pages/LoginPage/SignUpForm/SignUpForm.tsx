@@ -5,18 +5,27 @@ import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { CreateUserRequest } from "@/components/types";
+import { accountService } from "@/api/api";
+import { create } from "domain";
+import { useState } from "react";
+import { error } from "console";
 
 interface Props {
   setSignUpActive: (e: boolean) => void;
 }
 
 const SignUpForm = ({ setSignUpActive }: Props) => {
+  const [errorMessage, setErrorMessage] = useState<string>("");
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const [successCreate, setSuccessCreate] = useState<boolean | null>(null);
+
   const formSchema = z
     .object({
       name: z.string().min(1, {
         message: "What should we call you?",
       }),
-      email: z
+      username: z
         .string()
         .min(1, { message: "Email is required." })
         .email({ message: "Invalid email address." }),
@@ -34,15 +43,42 @@ const SignUpForm = ({ setSignUpActive }: Props) => {
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: "",
-      email: "",
+      username: "",
       password: "",
       confirmPassword: "",
     },
   });
 
-  const onSubmit = (values: z.infer<typeof formSchema>) => {
-    console.log(values);
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    try {
+      console.log(values);
+      setIsSubmitting(true);
+
+      const createUserRequest: CreateUserRequest = {
+        fullName: values.name,
+        username: values.username,
+        password: values.password,
+      };
+
+      const existingUser = await accountService.existingUser(createUserRequest.username);
+      console.log("exist", existingUser);
+      if (existingUser) {
+        setSuccessCreate(false);
+        setErrorMessage("Email already taken");
+        return;
+      }
+
+      await accountService.register(createUserRequest);
+      setSuccessCreate(true);
+    } catch (error) {
+      setErrorMessage("Error creating account");
+      setSuccessCreate(false);
+      console.error("Create account error:", error);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
+
   return (
     <>
       <Card className="p-8 h-[575px] flex-1/2 rounded-r-2xl rounded-l-none">
@@ -50,6 +86,17 @@ const SignUpForm = ({ setSignUpActive }: Props) => {
         <CardDescription className="text-center -mt-5 mb-3 text-xs">
           Get started - it's free.
         </CardDescription>
+        <div
+          className={`flex justify-center text-xs p-0 -mt-5 -mb-3 h-6 min-h-[10px] ${
+            successCreate === true
+              ? "text-green-800"
+              : successCreate === false
+              ? "text-destructive"
+              : ""
+          }`}
+        >
+          {successCreate === true ? "Account Created" : successCreate === false ? errorMessage : ""}
+        </div>
 
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
@@ -78,12 +125,12 @@ const SignUpForm = ({ setSignUpActive }: Props) => {
                 <div className="flex justify-between items-center mb-2">
                   <FormLabel className="text-sm font-medium whitespace-nowrap">Email</FormLabel>
                   <div className="text-xs text-destructive">
-                    {form.formState.errors?.email?.message}
+                    {form.formState.errors?.username?.message}
                   </div>
                 </div>
                 <FormField
                   control={form.control}
-                  name="email"
+                  name="username"
                   render={({ field }) => (
                     <FormItem>
                       <FormControl>
@@ -141,7 +188,7 @@ const SignUpForm = ({ setSignUpActive }: Props) => {
               type="submit"
               className="w-full bg-black hover:bg-neutral-800 whitespace-nowrap mt-3"
             >
-              Sign up
+              {isSubmitting ? "Signing Up" : "Sign Up"}
             </Button>
 
             <div className="text-center pb-2">

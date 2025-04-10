@@ -19,6 +19,6 @@ namespace task_management_system_backend.Models.Entities
         public string Password { get; set; } = string.Empty;
 
         [Column("role")]
-        public string Role { get; set; } = string.Empty;
+        public string Role { get; set; } = "User";
     }
 }

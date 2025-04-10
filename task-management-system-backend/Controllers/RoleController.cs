@@ -19,7 +19,7 @@ namespace task_management_system_backend.Controllers
             _appDbContext = appDbContext;
         }
 
-        [HttpGet]
+        [HttpGet("getroles")]
         public async Task<ActionResult<List<Role>>> GetAllRoles()
         {
             return await _appDbContext.Roles.ToListAsync(); 

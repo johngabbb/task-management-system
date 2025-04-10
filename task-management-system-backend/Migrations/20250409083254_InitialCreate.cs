@@ -8,17 +8,32 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace task_management_system_backend.Migrations
 {
     /// <inheritdoc />
-    public partial class AddUserRolesTable : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "accounts",
+                columns: table => new
+                {
+                    id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    fullname = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    username = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    password = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    role = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_accounts", x => x.id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "roles",
                 columns: table => new
                 {
-                    id = table.Column<Guid>(type: "uuid", nullable: false),
-                    role = table.Column<string>(type: "text", nullable: false)
+                    id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    role = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -29,9 +44,9 @@ namespace task_management_system_backend.Migrations
                 name: "user_roles",
                 columns: table => new
                 {
-                    id = table.Column<Guid>(type: "uuid", nullable: false),
-                    account_id = table.Column<Guid>(type: "uuid", nullable: false),
-                    role_id = table.Column<Guid>(type: "uuid", nullable: false)
+                    id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    account_id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    role_id = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -49,6 +64,11 @@ namespace task_management_system_backend.Migrations
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.InsertData(
+                table: "accounts",
+                columns: new[] { "id", "fullname", "password", "role", "username" },
+                values: new object[] { new Guid("8dd9e73e-217a-4208-a031-7ac5c9551215"), "System Administrator", "AQAAAAIAAYagAAAAEOgHEgRI4ayuckxnvZ4rBSJRYvLNtIGJviS19r1s28ZE/HADCBgbPpDUgQ0cwkqjKw==", "Admin", "admin" });
 
             migrationBuilder.InsertData(
                 table: "roles",
@@ -90,11 +110,10 @@ namespace task_management_system_backend.Migrations
                 name: "user_roles");
 
             migrationBuilder.DropTable(
-                name: "roles");
+                name: "accounts");
 
-            migrationBuilder.DropIndex(
-                name: "IX_accounts_username",
-                table: "accounts");
+            migrationBuilder.DropTable(
+                name: "roles");
         }
     }
 }
