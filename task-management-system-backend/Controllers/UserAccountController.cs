@@ -33,6 +33,12 @@ namespace task_management_system_backend.Controllers
             return await _dbContext.Accounts.FirstOrDefaultAsync(a => a.Id == id);
         }
 
+        [HttpGet("existinguser")]
+        public async Task<bool> CheckExistingUser(string username)
+        {
+            return await _dbContext.Accounts.AnyAsync(x => x.Username == username);
+        }
+
         [HttpPost("create")]
         public async Task<ActionResult> Create([FromBody] Account account)
         {
@@ -42,6 +48,10 @@ namespace task_management_system_backend.Controllers
             {
                 return BadRequest("Invalid Request");
             }
+
+            var usernameExist = await _dbContext.Accounts.AnyAsync(x => x.Username == account.Username);
+            if (usernameExist)
+                return BadRequest("Email already taken");
 
             account.Password = _passwordHasher.HashPassword(account, account.Password);
 
