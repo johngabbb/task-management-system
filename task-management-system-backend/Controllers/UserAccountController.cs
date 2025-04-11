@@ -44,7 +44,7 @@ namespace task_management_system_backend.Controllers
         {
             if (string.IsNullOrWhiteSpace(account.Username) ||
                 string.IsNullOrWhiteSpace(account.Password) ||
-                string.IsNullOrWhiteSpace(account.FullName))
+                string.IsNullOrWhiteSpace(account.Name))
             {
                 return BadRequest("Invalid Request");
             }

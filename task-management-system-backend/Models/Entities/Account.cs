@@ -7,8 +7,8 @@ namespace task_management_system_backend.Models.Entities
     public class Account : Base
     {
         [Required]
-        [Column("fullname")]
-        public string FullName { get; set; } = string.Empty;
+        [Column("name")]
+        public string Name { get; set; } = string.Empty;
 
         [Required]
         [Column("username")]
@@ -18,7 +18,11 @@ namespace task_management_system_backend.Models.Entities
         [Column("password")]
         public string Password { get; set; } = string.Empty;
 
-        [Column("role")]
-        public string Role { get; set; } = "User";
+        [Required]
+        [Column("role_id")]
+        public Guid UserRoleId { get; set; }
+
+        [ForeignKey("RoleId")]
+        public UserRole UserRole { get; set; } = null!;
     }
 }
