@@ -15,6 +15,7 @@ namespace task_management_system_backend.Data
         public DbSet<Account> Accounts { get; set; }
         public DbSet<UserRole> UserRoles { get; set; }
         public DbSet<Task> Tasks { get; set; }  
+        public DbSet<Sprint> Sprints {  get; set; }
         public DbSet<Project> Projects { get; set; }
 
 
@@ -58,6 +59,18 @@ namespace task_management_system_backend.Data
                     UserRoleId = new Guid("1a36152c-268a-4a9a-bb50-1a8f29119b8c")
                 }
             );
+
+            modelBuilder.Entity<Task>()
+                .HasOne(t => t.Sprint)
+                .WithMany()
+                .HasForeignKey(t => t.SprintId)
+                .OnDelete(DeleteBehavior.NoAction); // Prevent cascade delete cycle
+
+            modelBuilder.Entity<Task>()
+                .HasOne(t => t.Project)
+                .WithMany()
+                .HasForeignKey(t => t.ProjectId)
+                .OnDelete(DeleteBehavior.NoAction); // Prevent cascade delete cycle
         }
     }
 }

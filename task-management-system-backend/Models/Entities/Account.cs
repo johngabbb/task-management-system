@@ -21,7 +21,8 @@ namespace task_management_system_backend.Models.Entities
         [Column("role_id")]
         public Guid? UserRoleId { get; set; }
 
+
         [ForeignKey("UserRoleId")]
-        public UserRole? UserRole { get; set; } = null!;
+        public UserRole UserRole { get; set; } = null!;
     }
 }
