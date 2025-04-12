@@ -13,21 +13,21 @@ export interface LoginRequest {
   
   export interface User {
     id: string;
-    fullName: string;
+    name: string;
     username: string;
     password?: string; 
     role: string;
   }
   
   export interface CreateUserRequest {
-    fullName: string;
+    name: string;
     username: string;
     password: string;
   }
   
   export interface UpdateUserRequest {
     id: string;
-    fullName: string;
+    name: string;
     username: string;
     password: string;
   }

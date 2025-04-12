@@ -46,6 +46,7 @@ export const authService = {
 
 export const accountService = {
   register: async (userInfo: CreateUserRequest) => {
+    console.log(userInfo);
     const response = await api.post("UserAccount/create", userInfo);
     return response.data;
   },
