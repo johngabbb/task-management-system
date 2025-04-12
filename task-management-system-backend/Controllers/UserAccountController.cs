@@ -53,19 +53,10 @@ namespace task_management_system_backend.Controllers
             if (usernameExist)
                 return BadRequest("Email already taken");
 
+            account.UserRoleId= new Guid("4a8dcd7c-df91-4bfc-b0c8-94d0b9e0e684");   // default user role 
             account.Password = _passwordHasher.HashPassword(account, account.Password);
 
             await _dbContext.Accounts.AddAsync(account);
-            await _dbContext.SaveChangesAsync();
-
-            var userRoleId = new Guid("4a8dcd7c-df91-4bfc-b0c8-94d0b9e0e684"); // User role id
-            var userRole = new UserRole
-            {
-                AccountId = account.Id,
-                RoleId = userRoleId
-            };
-
-            await _dbContext.UserRoles.AddAsync(userRole);
             await _dbContext.SaveChangesAsync();
 
             return CreatedAtAction(nameof(GetById), new { id = account.Id }, account);
@@ -77,7 +68,7 @@ namespace task_management_system_backend.Controllers
             if (account.Id == Guid.Empty ||
                 string.IsNullOrWhiteSpace(account.Username) ||
                 string.IsNullOrWhiteSpace(account.Password) ||
-                string.IsNullOrWhiteSpace(account.FullName))
+                string.IsNullOrWhiteSpace(account.Name))
             {
                 return BadRequest("Invalid Request");
             }
