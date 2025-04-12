@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using task_management_system_backend.Data;
 
@@ -11,9 +12,11 @@ using task_management_system_backend.Data;
 namespace task_management_system_backend.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250412161917_AddTaskAndProjectTables")]
+    partial class AddTaskAndProjectTables
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -89,38 +92,6 @@ namespace task_management_system_backend.Migrations
                     b.ToTable("project");
                 });
 
-            modelBuilder.Entity("task_management_system_backend.Models.Entities.Sprint", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("id");
-
-                    b.Property<string>("Code")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("code");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2")
-                        .HasColumnName("created");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("name");
-
-                    b.Property<Guid>("ProjectId")
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("project_id");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProjectId");
-
-                    b.ToTable("sprint");
-                });
-
             modelBuilder.Entity("task_management_system_backend.Models.Entities.Task", b =>
                 {
                     b.Property<Guid>("Id")
@@ -130,7 +101,7 @@ namespace task_management_system_backend.Migrations
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2")
-                        .HasColumnName("created");
+                        .HasColumnName("createdAt");
 
                     b.Property<decimal>("Estimated")
                         .HasColumnType("decimal(18,2)")
@@ -147,11 +118,7 @@ namespace task_management_system_backend.Migrations
 
                     b.Property<Guid>("ProjectId")
                         .HasColumnType("uniqueidentifier")
-                        .HasColumnName("project_id");
-
-                    b.Property<Guid>("SprintId")
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("sprint_id");
+                        .HasColumnName("projectId");
 
                     b.Property<int>("Status")
                         .HasColumnType("int")
@@ -159,13 +126,11 @@ namespace task_management_system_backend.Migrations
 
                     b.Property<Guid?>("UserId")
                         .HasColumnType("uniqueidentifier")
-                        .HasColumnName("user_id");
+                        .HasColumnName("userId");
 
                     b.HasKey("Id");
 
                     b.HasIndex("ProjectId");
-
-                    b.HasIndex("SprintId");
 
                     b.HasIndex("UserId");
 
@@ -218,29 +183,12 @@ namespace task_management_system_backend.Migrations
                     b.Navigation("UserRole");
                 });
 
-            modelBuilder.Entity("task_management_system_backend.Models.Entities.Sprint", b =>
-                {
-                    b.HasOne("task_management_system_backend.Models.Entities.Project", "Project")
-                        .WithMany()
-                        .HasForeignKey("ProjectId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Project");
-                });
-
             modelBuilder.Entity("task_management_system_backend.Models.Entities.Task", b =>
                 {
                     b.HasOne("task_management_system_backend.Models.Entities.Project", "Project")
                         .WithMany()
                         .HasForeignKey("ProjectId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.HasOne("task_management_system_backend.Models.Entities.Sprint", "Sprint")
-                        .WithMany()
-                        .HasForeignKey("SprintId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("task_management_system_backend.Models.Entities.Account", "Account")
@@ -250,8 +198,6 @@ namespace task_management_system_backend.Migrations
                     b.Navigation("Account");
 
                     b.Navigation("Project");
-
-                    b.Navigation("Sprint");
                 });
 #pragma warning restore 612, 618
         }

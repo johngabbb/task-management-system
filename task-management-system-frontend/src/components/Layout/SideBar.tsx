@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import wolfLogo from "../../assets/wolf-logo.png";
+import { useAuth } from "@/hooks/AuthContext";
 
 interface Props {
   movePage: (e: string) => void;
@@ -18,6 +19,16 @@ interface Props {
 }
 
 const SideBar = ({ movePage, activePage }: Props) => {
+  const auth = useAuth();
+
+  const onSubmit = () => {
+    try {
+      auth.logout();
+    } catch (error) {
+      console.error("error logging out", error);
+    }
+  };
+
   const getButtonClass = (page: string) => {
     return activePage === page
       ? "cursor-pointer justify-start shadow-none bg-neutral-900"
@@ -134,7 +145,11 @@ const SideBar = ({ movePage, activePage }: Props) => {
                   <span className={getTextClass("settings")}>Settings</span>
                 </div>
               </Button>
-              <Button className="cursor-pointer bg-transparent justify-start shadow-none mt-auto group hover:bg-neutral-900">
+              <Button
+                type="button"
+                className="cursor-pointer bg-transparent justify-start shadow-none mt-auto group hover:bg-neutral-900"
+                onClick={() => onSubmit()}
+              >
                 <div className="flex gap-2 items-center">
                   <LogOut
                     size={18}

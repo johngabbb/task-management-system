@@ -50,8 +50,8 @@ namespace task_management_system_backend.Services
             }
 
             var userRole = await _appDbContext.UserRoles
-                .Where(x => x.AccountId == userAccount.Id)
-                .Select(x => x.Role.Name)
+                .Where(x => x.Id == userAccount.UserRoleId)
+                .Select(x => x.Name)
                 .FirstOrDefaultAsync();
 
             var issuer = _configuration["JwtConfig:Issuer"];

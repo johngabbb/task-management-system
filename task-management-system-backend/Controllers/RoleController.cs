@@ -20,33 +20,28 @@ namespace task_management_system_backend.Controllers
         }
 
         [HttpGet("getroles")]
-        public async Task<ActionResult<List<Role>>> GetAllRoles()
+        public async Task<ActionResult<List<UserRole>>> GetAllRoles()
         {
-            return await _appDbContext.Roles.ToListAsync(); 
+            return await _appDbContext.UserRoles.ToListAsync(); 
         }
 
         [HttpPost("assign")]
         public async Task<ActionResult> AssignRoleToUser(Guid userId, Guid roleId)
         {
-            var userExist = await _appDbContext.UserRoles.AnyAsync(x => x.AccountId == userId);
-            if (!userExist)
+            var user = await _appDbContext.Accounts.FirstOrDefaultAsync(x => x.Id == userId);
+            if (user is null)
                 return NotFound("User not found");
 
-            var roleExist = await _appDbContext.Roles.AnyAsync(x => x.Id == roleId);
+            var roleExist = await _appDbContext.UserRoles.AnyAsync(x => x.Id == roleId);
             if (!roleExist)
                 return NotFound("Role does not exist");
 
-            var existingMapping = await _appDbContext.UserRoles.FirstOrDefaultAsync(x => x.AccountId == userId && x.RoleId == roleId);
-            if (existingMapping is not null)
+            if (user.UserRoleId == roleId)
                 return Ok("Role already assigned to user");
 
-            var userRole = new UserRole
-            {
-                AccountId = userId,
-                RoleId = roleId
-            };
+            user.UserRoleId = roleId;
 
-            await _appDbContext.UserRoles.AddAsync(userRole);
+            _appDbContext.Accounts.Update(user);
             await _appDbContext.SaveChangesAsync();
 
             return Ok("Role assgined successfully");
@@ -55,44 +50,31 @@ namespace task_management_system_backend.Controllers
         [HttpDelete("role/{roleId}")]
         public async Task<ActionResult> DeleteRole(Guid roleId)
         {
-            var roleExist = await _appDbContext.Roles.FirstOrDefaultAsync(x => x.Id == roleId);
+            var roleExist = await _appDbContext.UserRoles.FirstOrDefaultAsync(x => x.Id == roleId);
 
             if (roleExist is null) 
                 return NotFound("Role does not exist");
 
 
-            _appDbContext.Roles.Remove(roleExist);
+            _appDbContext.UserRoles.Remove(roleExist);
             await _appDbContext.SaveChangesAsync();
 
             return Ok("Role removed succesfully");
         }
 
         [HttpDelete("user/{userId}/role/{roleId}")]
-        public async Task<ActionResult> DeleteRoleFromUser(Guid userId, Guid roleId)
+        public async Task<ActionResult> DeleteUserRoleFromUser(Guid userId, Guid roleId)
         {
-            var userWithRoleExist = await _appDbContext.UserRoles.FirstOrDefaultAsync(x => x.AccountId == userId && x.RoleId == roleId);
+            var userWithRoleExist = await _appDbContext.Accounts.FirstOrDefaultAsync(x => x.Id == userId && x.UserRoleId == roleId);
 
             if (userWithRoleExist is null)
                 return NotFound("User does not have this role");
 
 
-            _appDbContext.UserRoles.Remove(userWithRoleExist);
+            _appDbContext.Accounts.Remove(userWithRoleExist);
             await _appDbContext.SaveChangesAsync();
 
             return Ok("Role removed from this user succesfully");
-        }
-
-        [HttpGet("user/{userId}")]
-        public async Task<ActionResult<Role>> GetUserRole(Guid userId)
-        {
-            var userDetails = await _appDbContext.Accounts.FirstOrDefaultAsync(x => x.Id == userId);
-
-            if (userDetails is null)
-            {
-                return NotFound("User not found");
-            }
-
-            return Ok(userDetails.Role);
         }
     }
 }

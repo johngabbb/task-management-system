@@ -73,6 +73,9 @@ builder.Services.AddCors(options =>
 
 builder.Services.AddScoped<PasswordHasher<Account>>();
 builder.Services.AddScoped<JwtService>();
+builder.Services.AddScoped<AccountService>();
+builder.Services.AddScoped<TaskService>();
+builder.Services.AddScoped<ProjectService>();
 
 var app = builder.Build();
 

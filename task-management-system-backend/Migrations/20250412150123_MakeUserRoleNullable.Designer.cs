@@ -12,8 +12,8 @@ using task_management_system_backend.Data;
 namespace task_management_system_backend.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250409083254_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20250412150123_MakeUserRoleNullable")]
+    partial class MakeUserRoleNullable
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -32,20 +32,19 @@ namespace task_management_system_backend.Migrations
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("id");
 
-                    b.Property<string>("FullName")
+                    b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)")
-                        .HasColumnName("fullname");
+                        .HasColumnName("name");
 
                     b.Property<string>("Password")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("password");
 
-                    b.Property<string>("Role")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("role");
+                    b.Property<Guid?>("UserRoleId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("role_id");
 
                     b.Property<string>("Username")
                         .IsRequired()
@@ -53,6 +52,8 @@ namespace task_management_system_backend.Migrations
                         .HasColumnName("username");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("UserRoleId");
 
                     b.HasIndex("Username")
                         .IsUnique();
@@ -63,14 +64,14 @@ namespace task_management_system_backend.Migrations
                         new
                         {
                             Id = new Guid("8dd9e73e-217a-4208-a031-7ac5c9551215"),
-                            FullName = "System Administrator",
+                            Name = "System Administrator",
                             Password = "AQAAAAIAAYagAAAAEOgHEgRI4ayuckxnvZ4rBSJRYvLNtIGJviS19r1s28ZE/HADCBgbPpDUgQ0cwkqjKw==",
-                            Role = "Admin",
+                            UserRoleId = new Guid("1a36152c-268a-4a9a-bb50-1a8f29119b8c"),
                             Username = "admin"
                         });
                 });
 
-            modelBuilder.Entity("task_management_system_backend.Models.Entities.Role", b =>
+            modelBuilder.Entity("task_management_system_backend.Models.Entities.UserRole", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -80,14 +81,14 @@ namespace task_management_system_backend.Migrations
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)")
-                        .HasColumnName("role");
+                        .HasColumnName("role_name");
 
                     b.HasKey("Id");
 
                     b.HasIndex("Name")
                         .IsUnique();
 
-                    b.ToTable("roles");
+                    b.ToTable("user_roles");
 
                     b.HasData(
                         new
@@ -107,47 +108,13 @@ namespace task_management_system_backend.Migrations
                         });
                 });
 
-            modelBuilder.Entity("task_management_system_backend.Models.Entities.UserRole", b =>
+            modelBuilder.Entity("task_management_system_backend.Models.Entities.Account", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("id");
-
-                    b.Property<Guid>("AccountId")
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("account_id");
-
-                    b.Property<Guid>("RoleId")
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("role_id");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AccountId");
-
-                    b.HasIndex("RoleId");
-
-                    b.ToTable("user_roles");
-                });
-
-            modelBuilder.Entity("task_management_system_backend.Models.Entities.UserRole", b =>
-                {
-                    b.HasOne("task_management_system_backend.Models.Entities.Account", "Account")
+                    b.HasOne("task_management_system_backend.Models.Entities.UserRole", "UserRole")
                         .WithMany()
-                        .HasForeignKey("AccountId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UserRoleId");
 
-                    b.HasOne("task_management_system_backend.Models.Entities.Role", "Role")
-                        .WithMany()
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Account");
-
-                    b.Navigation("Role");
+                    b.Navigation("UserRole");
                 });
 #pragma warning restore 612, 618
         }

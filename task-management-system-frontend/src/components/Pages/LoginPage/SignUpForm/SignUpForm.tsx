@@ -55,13 +55,12 @@ const SignUpForm = ({ setSignUpActive }: Props) => {
       setIsSubmitting(true);
 
       const createUserRequest: CreateUserRequest = {
-        fullName: values.name,
+        name: values.name,
         username: values.username,
         password: values.password,
       };
 
       const existingUser = await accountService.existingUser(createUserRequest.username);
-      console.log("exist", existingUser);
       if (existingUser) {
         setSuccessCreate(false);
         setErrorMessage("Email already taken");
@@ -69,6 +68,7 @@ const SignUpForm = ({ setSignUpActive }: Props) => {
       }
 
       await accountService.register(createUserRequest);
+      console.log(createUserRequest);
       setSuccessCreate(true);
     } catch (error) {
       setErrorMessage("Error creating account");
