@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using task_management_system_backend.Data;
 
@@ -11,9 +12,11 @@ using task_management_system_backend.Data;
 namespace task_management_system_backend.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250412150123_MakeUserRoleNullable")]
+    partial class MakeUserRoleNullable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -68,72 +71,6 @@ namespace task_management_system_backend.Migrations
                         });
                 });
 
-            modelBuilder.Entity("task_management_system_backend.Models.Entities.Project", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("id");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2")
-                        .HasColumnName("created");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("name");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("project");
-                });
-
-            modelBuilder.Entity("task_management_system_backend.Models.Entities.Task", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("id");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2")
-                        .HasColumnName("createdAt");
-
-                    b.Property<decimal>("Estimated")
-                        .HasColumnType("decimal(18,2)")
-                        .HasColumnName("estimated");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("name");
-
-                    b.Property<int>("Priority")
-                        .HasColumnType("int")
-                        .HasColumnName("priority");
-
-                    b.Property<Guid>("ProjectId")
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("projectId");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("int")
-                        .HasColumnName("status");
-
-                    b.Property<Guid?>("UserId")
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("userId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProjectId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("task");
-                });
-
             modelBuilder.Entity("task_management_system_backend.Models.Entities.UserRole", b =>
                 {
                     b.Property<Guid>("Id")
@@ -178,23 +115,6 @@ namespace task_management_system_backend.Migrations
                         .HasForeignKey("UserRoleId");
 
                     b.Navigation("UserRole");
-                });
-
-            modelBuilder.Entity("task_management_system_backend.Models.Entities.Task", b =>
-                {
-                    b.HasOne("task_management_system_backend.Models.Entities.Project", "Project")
-                        .WithMany()
-                        .HasForeignKey("ProjectId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("task_management_system_backend.Models.Entities.Account", "Account")
-                        .WithMany()
-                        .HasForeignKey("UserId");
-
-                    b.Navigation("Account");
-
-                    b.Navigation("Project");
                 });
 #pragma warning restore 612, 618
         }

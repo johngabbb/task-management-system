@@ -50,7 +50,7 @@ namespace task_management_system_backend.Services
             }
 
             var userRole = await _appDbContext.UserRoles
-                .Where(x => x.Id == userAccount.Id)
+                .Where(x => x.Id == userAccount.UserRoleId)
                 .Select(x => x.Name)
                 .FirstOrDefaultAsync();
 

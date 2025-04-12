@@ -19,9 +19,9 @@ namespace task_management_system_backend.Models.Entities
         public string Password { get; set; } = string.Empty;
 
         [Column("role_id")]
-        public Guid UserRoleId { get; set; }
+        public Guid? UserRoleId { get; set; }
 
         [ForeignKey("UserRoleId")]
-        public UserRole UserRole { get; set; } = null!;
+        public UserRole? UserRole { get; set; } = null!;
     }
 }

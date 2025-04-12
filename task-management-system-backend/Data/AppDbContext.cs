@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using task_management_system_backend.Models.Entities;
+using Task = task_management_system_backend.Models.Entities.Task;
 
 namespace task_management_system_backend.Data
 {
@@ -13,6 +14,9 @@ namespace task_management_system_backend.Data
 
         public DbSet<Account> Accounts { get; set; }
         public DbSet<UserRole> UserRoles { get; set; }
+        public DbSet<Task> Tasks { get; set; }  
+        public DbSet<Project> Projects { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
