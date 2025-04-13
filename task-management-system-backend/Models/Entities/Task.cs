@@ -27,6 +27,9 @@ namespace task_management_system_backend.Models.Entities
         [Column("estimated")]
         public decimal Estimated { get; set; } = 0;
 
+        [Column("description")]
+        public string Description { get; set; } = string.Empty;
+
         [Column("user_id")]
         public Guid? UserId {  get; set; }
 
