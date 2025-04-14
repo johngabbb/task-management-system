@@ -24,6 +24,9 @@ import {
   SelectContent,
 } from "@/components/ui/select";
 import { optional, z } from "zod";
+import { taskService } from "@/api/api";
+import { TaskRequest } from "@/components/types";
+import { Status, Priority } from "@/components/types";
 
 interface Props {}
 
@@ -32,12 +35,14 @@ const CreateTask = (props: Props) => {
 
   const formSchema = z.object({
     taskTitle: z.string().min(1, {
-      message: "",
+      message: "Task title is required",
     }),
-    assign: z.string({ required_error: "" }),
+    assign: z.string({ required_error: "Assignee is required" }),
     description: z.string().optional(),
-    taskStage: z.string({ required_error: "" }),
-    priority: z.string({ required_error: "" }),
+    taskStage: z
+      .string({ required_error: "Task stage is required" })
+      .transform((val) => Number(val)), // Convert to number
+    priority: z.string({ required_error: "Priority is required" }).transform((val) => Number(val)), // Convert to number
     storyPoints: z.string().optional(),
   });
 
@@ -66,8 +71,18 @@ const CreateTask = (props: Props) => {
     }
   }, [open, form]);
 
-  const onCreateTask = (values: z.infer<typeof formSchema>) => {
-    console.log("test");
+  const onCreateTask = async (values: z.infer<typeof formSchema>) => {
+    const taskRequest: TaskRequest = {
+      name: values.taskTitle,
+      user: values.assign,
+      createdAt: new Date(),
+      status: values.taskStage, // Already converted to number by zod transform
+      priority: values.priority, // Already converted to number by zod transform
+      estimated: values.storyPoints ? Number(values.storyPoints) : 0,
+      description: values.description || "",
+    };
+
+    const response = await taskService.createTask(taskRequest);
     setOpen(false);
   };
 
@@ -213,7 +228,10 @@ const CreateTask = (props: Props) => {
                           name="taskStage"
                           render={({ field }) => (
                             <FormItem>
-                              <Select onValueChange={field.onChange} defaultValue={field.value}>
+                              <Select
+                                onValueChange={field.onChange}
+                                defaultValue={field.value?.toString()}
+                              >
                                 <FormControl>
                                   <SelectTrigger className="w-full min-w-[8rem] border-neutral-700 cursor-pointer text-white">
                                     <SelectValue placeholder="Select task stage" />
@@ -227,25 +245,25 @@ const CreateTask = (props: Props) => {
                                 >
                                   <SelectItem
                                     className="focus:bg-neutral-900 focus:text-white cursor-pointer"
-                                    value="pending"
+                                    value={Status.Pending.toString()}
                                   >
                                     Pending
                                   </SelectItem>
                                   <SelectItem
                                     className="focus:bg-neutral-900 focus:text-white cursor-pointer"
-                                    value="inProgress"
+                                    value={Status.InProgress.toString()}
                                   >
                                     In Progress
                                   </SelectItem>
                                   <SelectItem
                                     className="focus:bg-neutral-900 focus:text-white cursor-pointer"
-                                    value="qa"
+                                    value={Status.QA.toString()}
                                   >
                                     QA
                                   </SelectItem>
                                   <SelectItem
                                     className="focus:bg-neutral-900 focus:text-white cursor-pointer"
-                                    value="completed"
+                                    value={Status.Completed.toString()}
                                   >
                                     Completed
                                   </SelectItem>
@@ -270,7 +288,10 @@ const CreateTask = (props: Props) => {
                           name="priority"
                           render={({ field }) => (
                             <FormItem>
-                              <Select onValueChange={field.onChange} defaultValue={field.value}>
+                              <Select
+                                onValueChange={field.onChange}
+                                defaultValue={field.value?.toString()}
+                              >
                                 <FormControl>
                                   <SelectTrigger className="w-full min-w-[8rem] border-neutral-700 cursor-pointer text-white">
                                     <SelectValue placeholder="Priority Level" />
@@ -284,19 +305,19 @@ const CreateTask = (props: Props) => {
                                 >
                                   <SelectItem
                                     className="focus:bg-neutral-900 focus:text-white cursor-pointer"
-                                    value="low"
+                                    value={Priority.Low.toString()}
                                   >
                                     Low
                                   </SelectItem>
                                   <SelectItem
                                     className="focus:bg-neutral-900 focus:text-white cursor-pointer"
-                                    value="medium"
+                                    value={Priority.Medium.toString()}
                                   >
                                     Medium
                                   </SelectItem>
                                   <SelectItem
                                     className="focus:bg-neutral-900 focus:text-white cursor-pointer"
-                                    value="high"
+                                    value={Priority.High.toString()}
                                   >
                                     High
                                   </SelectItem>

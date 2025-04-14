@@ -47,3 +47,26 @@ export interface LoginRequest {
     account?: User;
     role?: Role;
   }
+ ``
+  export interface TaskRequest {
+    name: string;
+    user: string;
+    createdAt: Date;
+    status: number;
+    priority: number;
+    estimated: number;
+    description: string;
+  }
+
+  export enum Status {
+    Pending = 1,
+    InProgress = 2,
+    QA = 3,
+    Completed = 4
+  }
+
+  export enum Priority {
+    Low = 1,
+    Medium = 2,
+    High = 3
+  }

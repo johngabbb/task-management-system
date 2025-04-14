@@ -1,4 +1,10 @@
-import { CreateUserRequest, LoginRequest, LoginResponse } from "@/components/types";
+import {
+  CreateUserRequest,
+  LoginRequest,
+  LoginResponse,
+  TaskRequest,
+  User,
+} from "@/components/types";
 import axios from "axios";
 
 const api = axios.create({
@@ -57,8 +63,13 @@ export const accountService = {
     });
     return response.data;
   },
+};
 
-  // getUser: async()
+export const taskService = {
+  createTask: async (taskInfo: TaskRequest) => {
+    const response = await api.post("Task/createtask", taskInfo);
+    return response.data;
+  },
 };
 
 export default api;
