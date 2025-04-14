@@ -5,10 +5,12 @@ export interface LoginRequest {
   }
   
   export interface LoginResponse {
+    id: string;
     accessToken: string;
     username: string;
     expiresIn: number;
     role: string;
+    name: string;
   }
   
   export interface User {

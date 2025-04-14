@@ -3,7 +3,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@radix-ui/react-label";
 import { Bell, Search } from "lucide-react";
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { User } from "../types";
 
 const toPascalCase = (str: string): string => {
   // Handle empty string
@@ -19,11 +20,36 @@ const toPascalCase = (str: string): string => {
     .join("");
 };
 
+const getUserInitials = (str: string | null): string => {
+  if (!str || str === null) return "";
+
+  const parts = str.trim().split(" ");
+
+  if (parts.length === 1) {
+    // If there's only one name, take up to the first two characters
+    return parts[0].substring(0, Math.min(2, parts[0].length)).toUpperCase();
+  }
+
+  // If there are multiple names, take the first character of the first and last name
+  return (parts[0].charAt(0) + parts[parts.length - 1].charAt(0)).toUpperCase();
+};
+
 interface Props {
   activePage: string;
 }
 
 const NavBar = ({ activePage }: Props) => {
+  const [user, setUser] = useState<User | null>(null);
+
+  useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+    const token = localStorage.getItem("token");
+
+    if (storedUser && token) {
+      setUser(JSON.parse(storedUser));
+    }
+  }, []);
+
   return (
     <div className="flex justify-between items-center h-full w-full">
       <div className="text-white text-3xl font-bold pl-5">{toPascalCase(activePage)}</div>
@@ -55,15 +81,12 @@ const NavBar = ({ activePage }: Props) => {
           >
             <div className="flex items-center justify-between gap-3">
               <Avatar className="-ml-1">
-                <AvatarImage
-                  src="https://motionbgs.com/media/1192/sasuke-lightning-jutsu.jpg"
-                  alt="@shadcn"
-                  className="object-cover"
-                />
-                <AvatarFallback>GAB</AvatarFallback>
+                <AvatarFallback className="bg-blue-500 text-white rounded-full h-full w-full">
+                  {getUserInitials(user?.name || "")}
+                </AvatarFallback>
               </Avatar>
               <span className="text-neutral-300 transition-colors duration-300 group-hover:text-white">
-                Gabriel Reyes
+                {user?.name}
               </span>
             </div>
           </Button>

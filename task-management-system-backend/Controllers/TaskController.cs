@@ -41,8 +41,10 @@ namespace task_management_system_backend.Controllers
                 UserId = request.UserId,
             };
 
+            await _appDbContext.Tasks.AddAsync(task);
+            await _appDbContext.SaveChangesAsync();
 
-            return Ok();
+            return Ok(task);
         }
     }
 }

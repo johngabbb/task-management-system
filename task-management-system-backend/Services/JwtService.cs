@@ -83,10 +83,12 @@ namespace task_management_system_backend.Services
 
             return new LoginResponseModel
             {
+                Id = userAccount.Id,
                 AccessToken = accessToken,
                 Username = userAccount.Username,
                 ExpiresIn = (int)tokenExpiriyTimeStamp.Subtract(DateTime.UtcNow).TotalSeconds,
-                Role = userRole
+                Role = userRole,
+                Name = userAccount.Name
             };
         }
     }

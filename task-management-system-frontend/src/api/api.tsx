@@ -57,6 +57,8 @@ export const accountService = {
     });
     return response.data;
   },
+
+  // getUser: async()
 };
 
 export default api;
