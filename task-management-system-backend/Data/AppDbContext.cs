@@ -15,8 +15,6 @@ namespace task_management_system_backend.Data
         public DbSet<Account> Accounts { get; set; }
         public DbSet<UserRole> UserRoles { get; set; }
         public DbSet<Task> Tasks { get; set; }  
-        public DbSet<Sprint> Sprints {  get; set; }
-        public DbSet<Project> Projects { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -60,17 +58,6 @@ namespace task_management_system_backend.Data
                 }
             );
 
-            modelBuilder.Entity<Task>()
-                .HasOne(t => t.Sprint)
-                .WithMany()
-                .HasForeignKey(t => t.SprintId)
-                .OnDelete(DeleteBehavior.NoAction); // Prevent cascade delete cycle
-
-            modelBuilder.Entity<Task>()
-                .HasOne(t => t.Project)
-                .WithMany()
-                .HasForeignKey(t => t.ProjectId)
-                .OnDelete(DeleteBehavior.NoAction); // Prevent cascade delete cycle
         }
     }
 }

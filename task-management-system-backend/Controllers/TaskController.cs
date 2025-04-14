@@ -26,19 +26,6 @@ namespace task_management_system_backend.Controllers
                 return BadRequest("Task name is required");
             }
 
-            var project = await _appDbContext.Projects.FirstOrDefaultAsync(x => x.Id == request.ProjectId);
-            if (project is null)
-                return BadRequest("Project does not exist");
-
-            var sprint = await _appDbContext.Sprints.FirstOrDefaultAsync(x => x.Id == request.SprintId);
-            if (sprint is null)
-                return BadRequest("Sprint does not exist");
-
-            // Verify sprint belongs to the project
-            if (sprint.ProjectId != request.ProjectId)
-                return BadRequest("Sprint does not belong to the specified project");
-
-
             var user = await _appDbContext.Accounts.FirstOrDefaultAsync(x => x.Id == request.UserId);
             if (user is null)
                 return BadRequest("User does not exist");
@@ -52,8 +39,6 @@ namespace task_management_system_backend.Controllers
                 Status = request.Status,
                 Estimated = request.Estimated,
                 UserId = request.UserId,
-                ProjectId = request.ProjectId,
-                SprintId = request.SprintId
             };
 
 
