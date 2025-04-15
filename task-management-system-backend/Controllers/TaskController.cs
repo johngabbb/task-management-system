@@ -26,9 +26,14 @@ namespace task_management_system_backend.Controllers
                 return BadRequest("Task name is required");
             }
 
-            var user = await _appDbContext.Accounts.FirstOrDefaultAsync(x => x.Id == request.UserId);
-            if (user is null)
+            var user = await _appDbContext.Accounts.AnyAsync(x => x.Id == request.UserId);
+            if (!user)
                 return BadRequest("User does not exist");
+
+            var lastTaskCode = await _appDbContext.Tasks
+                .OrderByDescending(x => x.CreatedAt)
+                .Select(x => x.Code)
+                .FirstOrDefaultAsync();
 
             var task = new Task
             {
@@ -38,8 +43,19 @@ namespace task_management_system_backend.Controllers
                 Priority = request.Priority,
                 Status = request.Status,
                 Estimated = request.Estimated,
-                UserId = request.UserId,
+                UserId = request.UserId
             };
+
+            if (string.IsNullOrWhiteSpace(lastTaskCode))
+            {
+                task.Code = "TMS - 1";
+            }
+            else
+            {
+                var splitCode = lastTaskCode.Split("-");
+                var numCode = Convert.ToInt32(splitCode[1].Trim());
+                task.Code = $"TMS - {++numCode}";
+            }
 
             await _appDbContext.Tasks.AddAsync(task);
             await _appDbContext.SaveChangesAsync();

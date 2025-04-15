@@ -12,6 +12,10 @@ namespace task_management_system_backend.Models.Entities
         public string Name { get; set; } = string.Empty;
 
         [Required]
+        [Column("code")]
+        public string Code { get; set; } = string.Empty;
+
+        [Required]
         [Column("created")]
         public DateTime CreatedAt { get; set; }
 

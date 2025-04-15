@@ -8,8 +8,9 @@ namespace task_management_system_backend.Models.Api
         public DateTime CreatedAt { get; set; }
         public Priority Priority { get; set; } = Priority.Low;
         public Status Status { get; set; } = Status.Backlog;
-        public string User { get; set; } = string.Empty;
+        public Guid UserId { get; set; }
         public decimal Estimated { get; set; } = 0;
         public string Description { get; set; } = string.Empty;
+        public string Code { get; set; } = string.Empty;
     }
 }

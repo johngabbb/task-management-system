@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using task_management_system_backend.Data;
+using task_management_system_backend.Models.Api;
 using task_management_system_backend.Models.Entities;
 
 namespace task_management_system_backend.Controllers
@@ -22,9 +23,21 @@ namespace task_management_system_backend.Controllers
         }
 
         [HttpGet("getusers")]
-        public async Task<List<Account>> Get()
+        [Authorize]
+        public async Task<ActionResult<IEnumerable<object>>> GetUsers()
         {
-            return await _dbContext.Accounts.ToListAsync();
+            var users = await _dbContext.Accounts
+                .Include(x => x.UserRole)
+                .Select(x => new
+                {
+                    x.Id,
+                    x.Name,
+                    x.Username,
+                    Role = x.UserRole.Name,
+                })
+                .ToListAsync();
+
+            return Ok(users);
         }
 
         [HttpGet("getbyid/{id}")]
@@ -40,9 +53,9 @@ namespace task_management_system_backend.Controllers
         }
 
         [HttpPost("create")]
-        public async Task<ActionResult> Create([FromBody] Account account)
+        public async Task<ActionResult> Create([FromBody] CreateAccountRequestModel account)
         {
-            if (string.IsNullOrWhiteSpace(account.Username) ||
+            if (string.IsNullOrWhiteSpace(account.Username) || 
                 string.IsNullOrWhiteSpace(account.Password) ||
                 string.IsNullOrWhiteSpace(account.Name))
             {
@@ -53,13 +66,19 @@ namespace task_management_system_backend.Controllers
             if (usernameExist)
                 return BadRequest("Email already taken");
 
-            account.UserRoleId= new Guid("4a8dcd7c-df91-4bfc-b0c8-94d0b9e0e684");   // default user role 
-            account.Password = _passwordHasher.HashPassword(account, account.Password);
+            var newAccount = new Account
+            {
+                Name = account.Name,
+                Username = account.Username,
+                UserRoleId = new Guid("4a8dcd7c-df91-4bfc-b0c8-94d0b9e0e684"),   // default user role 
+            };
 
-            await _dbContext.Accounts.AddAsync(account);
+            newAccount.Password = _passwordHasher.HashPassword(newAccount, account.Password);
+
+            await _dbContext.Accounts.AddAsync(newAccount);
             await _dbContext.SaveChangesAsync();
 
-            return CreatedAtAction(nameof(GetById), new { id = account.Id }, account);
+            return CreatedAtAction(nameof(GetById), new { id = newAccount.Id }, account);
         }
 
         [HttpPut("update")]
