@@ -3,6 +3,7 @@ import {
   LoginRequest,
   LoginResponse,
   TaskRequest,
+  TaskResponse,
   User,
 } from "@/components/types";
 import axios from "axios";
@@ -71,6 +72,11 @@ export const accountService = {
 export const taskService = {
   createTask: async (taskInfo: TaskRequest) => {
     const response = await api.post("Task/createtask", taskInfo);
+    return response.data;
+  },
+
+  getAllTask: async () => {
+    const response = await api.get<TaskResponse[]>("Task/getalltask");
     return response.data;
   },
 };

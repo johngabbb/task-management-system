@@ -58,6 +58,17 @@ export interface LoginRequest {
     description: string;
   }
 
+  export interface TaskResponse {
+    name: string;
+    createdAt: Date;
+    updatedAt: Date;
+    status: string;
+    priority: string;
+    estimated: number;
+    code: string;
+    account: User;
+  }
+
   export enum Status {
     Pending = 1,
     InProgress = 2,
