@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using task_management_system_backend.Data;
@@ -19,7 +20,8 @@ namespace task_management_system_backend.Controllers
         }
 
         [HttpPost("createtask")]
-        public async Task<ActionResult> CreateTask([FromBody] TaskRequestModel request)
+        [Authorize]
+        public async Task<ActionResult<object>> CreateTask([FromBody] TaskRequestModel request)
         {
             if (string.IsNullOrWhiteSpace(request.Name))
             {
@@ -40,6 +42,7 @@ namespace task_management_system_backend.Controllers
                 Name = request.Name,
                 Description = request.Description,
                 CreatedAt = DateTime.UtcNow,
+                UpdatedAt = DateTime.UtcNow,
                 Priority = request.Priority,
                 Status = request.Status,
                 Estimated = request.Estimated,
@@ -61,6 +64,33 @@ namespace task_management_system_backend.Controllers
             await _appDbContext.SaveChangesAsync();
 
             return Ok(task);
+        }
+
+        [HttpGet("getalltask")]
+        [Authorize]
+        public async Task<ActionResult<object>> GetAllTask()
+        {
+            return await _appDbContext.Tasks
+                .Include(x => x.Account)
+                .Select(x => new
+                {
+                    x.Name,
+                    x.CreatedAt,
+                    x.UpdatedAt,
+                    status = x.Status.ToString(),
+                    priority = x.Priority.ToString(),
+                    x.Estimated,
+                    x.Code,
+                    x.Description,
+                    Account = new
+                    {
+                        x.Account.Id,
+                        x.Account.Name,
+                        x.Account.Username,
+                        role = x.Account.UserRole.Name,
+                    }
+                })
+                .ToListAsync();
         }
     }
 }

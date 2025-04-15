@@ -20,6 +20,10 @@ namespace task_management_system_backend.Models.Entities
         public DateTime CreatedAt { get; set; }
 
         [Required]
+        [Column("updated")]
+        public DateTime UpdatedAt { get; set; }
+
+        [Required]
         [Column("status")]
         public Status Status { get; set; }
 
