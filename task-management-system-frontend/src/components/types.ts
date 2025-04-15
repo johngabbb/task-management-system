@@ -50,7 +50,7 @@ export interface LoginRequest {
  ``
   export interface TaskRequest {
     name: string;
-    user: string;
+    userId: string;
     createdAt: Date;
     status: number;
     priority: number;

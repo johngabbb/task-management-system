@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/ui/form";
@@ -25,13 +25,15 @@ import {
 } from "@/components/ui/select";
 import { optional, z } from "zod";
 import { taskService } from "@/api/api";
-import { TaskRequest } from "@/components/types";
+import { TaskRequest, User } from "@/components/types";
 import { Status, Priority } from "@/components/types";
+import { accountService } from "@/api/api";
 
 interface Props {}
 
 const CreateTask = (props: Props) => {
   const [open, setOpen] = React.useState(false);
+  const [allUsers, setAllUsers] = useState<User[] | null>(null);
 
   const formSchema = z.object({
     taskTitle: z.string().min(1, {
@@ -71,10 +73,27 @@ const CreateTask = (props: Props) => {
     }
   }, [open, form]);
 
+  useEffect(() => {
+    getAllUsers();
+  }, []);
+
+  const getAllUsers = async () => {
+    try {
+      const response = await accountService.getAllUsers();
+      const filteredUsers = response.filter((user) => user.role !== "Admin");
+
+      setAllUsers(filteredUsers);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   const onCreateTask = async (values: z.infer<typeof formSchema>) => {
+    console.log(values);
+
     const taskRequest: TaskRequest = {
       name: values.taskTitle,
-      user: values.assign,
+      userId: values.assign,
       createdAt: new Date(),
       status: values.taskStage, // Already converted to number by zod transform
       priority: values.priority, // Already converted to number by zod transform
@@ -155,30 +174,16 @@ const CreateTask = (props: Props) => {
                                 align="start"
                                 className="bg-neutral-800 text-white border-1 border-neutral-700"
                               >
-                                <SelectItem
-                                  className="focus:bg-neutral-900 focus:text-white cursor-pointer"
-                                  value="1"
-                                >
-                                  Gabriel Reyes
-                                </SelectItem>
-                                <SelectItem
-                                  className="focus:bg-neutral-900 focus:text-white cursor-pointer"
-                                  value="2"
-                                >
-                                  Andrea Mendoza
-                                </SelectItem>
-                                <SelectItem
-                                  className="focus:bg-neutral-900 focus:text-white cursor-pointer"
-                                  value="3"
-                                >
-                                  Maximus
-                                </SelectItem>
-                                <SelectItem
-                                  className="focus:bg-neutral-900 focus:text-white cursor-pointer"
-                                  value="4"
-                                >
-                                  Hunter
-                                </SelectItem>
+                                {allUsers &&
+                                  allUsers.map((user) => (
+                                    <SelectItem
+                                      key={user.id}
+                                      className="focus:bg-neutral-900 focus:text-white cursor-pointer"
+                                      value={user.id}
+                                    >
+                                      {user.name}
+                                    </SelectItem>
+                                  ))}
                               </SelectContent>
                             </Select>
                           </FormItem>
@@ -243,30 +248,17 @@ const CreateTask = (props: Props) => {
                                   align="start"
                                   className="bg-neutral-800 text-white border-1 border-neutral-700"
                                 >
-                                  <SelectItem
-                                    className="focus:bg-neutral-900 focus:text-white cursor-pointer"
-                                    value={Status.Pending.toString()}
-                                  >
-                                    Pending
-                                  </SelectItem>
-                                  <SelectItem
-                                    className="focus:bg-neutral-900 focus:text-white cursor-pointer"
-                                    value={Status.InProgress.toString()}
-                                  >
-                                    In Progress
-                                  </SelectItem>
-                                  <SelectItem
-                                    className="focus:bg-neutral-900 focus:text-white cursor-pointer"
-                                    value={Status.QA.toString()}
-                                  >
-                                    QA
-                                  </SelectItem>
-                                  <SelectItem
-                                    className="focus:bg-neutral-900 focus:text-white cursor-pointer"
-                                    value={Status.Completed.toString()}
-                                  >
-                                    Completed
-                                  </SelectItem>
+                                  {Object.entries(Status)
+                                    .filter(([key]) => isNaN(Number(key)))
+                                    .map(([key, value]) => (
+                                      <SelectItem
+                                        key={value}
+                                        className="focus:bg-neutral-900 focus:text-white cursor-pointer"
+                                        value={value.toString()}
+                                      >
+                                        {key}
+                                      </SelectItem>
+                                    ))}
                                 </SelectContent>
                               </Select>
                             </FormItem>
@@ -303,24 +295,17 @@ const CreateTask = (props: Props) => {
                                   align="start"
                                   className="bg-neutral-800 text-white border-1 border-neutral-700"
                                 >
-                                  <SelectItem
-                                    className="focus:bg-neutral-900 focus:text-white cursor-pointer"
-                                    value={Priority.Low.toString()}
-                                  >
-                                    Low
-                                  </SelectItem>
-                                  <SelectItem
-                                    className="focus:bg-neutral-900 focus:text-white cursor-pointer"
-                                    value={Priority.Medium.toString()}
-                                  >
-                                    Medium
-                                  </SelectItem>
-                                  <SelectItem
-                                    className="focus:bg-neutral-900 focus:text-white cursor-pointer"
-                                    value={Priority.High.toString()}
-                                  >
-                                    High
-                                  </SelectItem>
+                                  {Object.entries(Priority)
+                                    .filter(([key]) => isNaN(Number(key)))
+                                    .map(([key, value]) => (
+                                      <SelectItem
+                                        key={value}
+                                        className="focus:bg-neutral-900 focus:text-white cursor-pointer"
+                                        value={value.toString()}
+                                      >
+                                        {key}
+                                      </SelectItem>
+                                    ))}
                                 </SelectContent>
                               </Select>
                             </FormItem>
