@@ -8,6 +8,7 @@ interface User {
   username: string;
   role: string;
   expiresIn: number;
+  name: string;
 }
 
 interface AuthContextType {
@@ -49,7 +50,11 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
           username: response.username,
           role: response.role,
           expiresIn: response.expiresIn,
+          id: response.id,
+          name: response.name,
         };
+        console.log(userData);
+
         localStorage.setItem("user", JSON.stringify(userData));
 
         setUser(userData);

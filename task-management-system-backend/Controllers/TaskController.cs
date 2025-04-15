@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using task_management_system_backend.Data;
@@ -19,45 +20,77 @@ namespace task_management_system_backend.Controllers
         }
 
         [HttpPost("createtask")]
-        public async Task<ActionResult> CreateTask([FromBody] TaskRequestModel request)
+        [Authorize]
+        public async Task<ActionResult<object>> CreateTask([FromBody] TaskRequestModel request)
         {
             if (string.IsNullOrWhiteSpace(request.Name))
             {
                 return BadRequest("Task name is required");
             }
 
-            var project = await _appDbContext.Projects.FirstOrDefaultAsync(x => x.Id == request.ProjectId);
-            if (project is null)
-                return BadRequest("Project does not exist");
-
-            var sprint = await _appDbContext.Sprints.FirstOrDefaultAsync(x => x.Id == request.SprintId);
-            if (sprint is null)
-                return BadRequest("Sprint does not exist");
-
-            // Verify sprint belongs to the project
-            if (sprint.ProjectId != request.ProjectId)
-                return BadRequest("Sprint does not belong to the specified project");
-
-
-            var user = await _appDbContext.Accounts.FirstOrDefaultAsync(x => x.Id == request.UserId);
-            if (user is null)
+            var user = await _appDbContext.Accounts.AnyAsync(x => x.Id == request.UserId);
+            if (!user)
                 return BadRequest("User does not exist");
+
+            var lastTaskCode = await _appDbContext.Tasks
+                .OrderByDescending(x => x.CreatedAt)
+                .Select(x => x.Code)
+                .FirstOrDefaultAsync();
 
             var task = new Task
             {
                 Name = request.Name,
                 Description = request.Description,
                 CreatedAt = DateTime.UtcNow,
+                UpdatedAt = DateTime.UtcNow,
                 Priority = request.Priority,
                 Status = request.Status,
                 Estimated = request.Estimated,
-                UserId = request.UserId,
-                ProjectId = request.ProjectId,
-                SprintId = request.SprintId
+                UserId = request.UserId
             };
 
+            if (string.IsNullOrWhiteSpace(lastTaskCode))
+            {
+                task.Code = "TMS - 1";
+            }
+            else
+            {
+                var splitCode = lastTaskCode.Split("-");
+                var numCode = Convert.ToInt32(splitCode[1].Trim());
+                task.Code = $"TMS - {++numCode}";
+            }
 
-            return Ok();
+            await _appDbContext.Tasks.AddAsync(task);
+            await _appDbContext.SaveChangesAsync();
+
+            return Ok(task);
+        }
+
+        [HttpGet("getalltask")]
+        [Authorize]
+        public async Task<ActionResult<object>> GetAllTask()
+        {
+            return await _appDbContext.Tasks
+                .Include(x => x.Account)
+                .Select(x => new
+                {
+                    x.Name,
+                    x.CreatedAt,
+                    x.UpdatedAt,
+                    status = x.Status.ToString(),
+                    priority = x.Priority.ToString(),
+                    x.Estimated,
+                    x.Code,
+                    x.Description,
+                    Account = new
+                    {
+                        x.Account.Id,
+                        x.Account.Name,
+                        x.Account.Username,
+                        role = x.Account.UserRole.Name,
+                    }
+                })
+                .ToListAsync();
         }
     }
 }

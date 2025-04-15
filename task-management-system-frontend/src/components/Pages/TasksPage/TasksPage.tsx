@@ -1,41 +1,51 @@
-import { Card, CardContent, CardDescription, CardFooter, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
+import { useEffect, useState, useRef } from "react"; // Added useRef import
 import { ScrollArea } from "@/components/ui/scroll-area";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
-import { Input } from "@/components/ui/input";
-import { z } from "zod";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/ui/form";
-import { Textarea } from "@/components/ui/textarea";
-import {
-  Select,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-  SelectContent,
-} from "@/components/ui/select";
 import CreateTask from "./CreateTask/CreateTask";
 import TaskCard from "./TaskCard/TaskCard";
+import { TaskResponse, User } from "@/components/types";
+import { accountService, taskService } from "@/api/api";
 
 interface Props {}
 
 const TasksPage = (props: Props) => {
   const [activeView, setActiveView] = useState<"board" | "list">("board");
+  const [allUsers, setAllUsers] = useState<User[] | null>(null);
+  const [allTasks, setAllTasks] = useState<TaskResponse[] | null>(null);
+  const effectRan = useRef(false); // Added ref to track if effect has run
 
   const handleActiveView = (view: "board" | "list") => {
     setActiveView(view);
+  };
+
+  useEffect(() => {
+    // Only run once even in StrictMode
+    if (!effectRan.current) {
+      effectRan.current = true;
+      getAllUsers();
+      fetchTasks();
+    }
+  }, []);
+
+  const getAllUsers = async () => {
+    try {
+      const response = await accountService.getAllUsers();
+      const filteredUsers = response.filter((user) => user.role !== "Admin");
+      console.log(filteredUsers);
+      setAllUsers(filteredUsers);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const fetchTasks = async () => {
+    try {
+      const response = await taskService.getAllTask();
+      console.log(response);
+      setAllTasks(response);
+    } catch (err) {
+      console.error("Failed to fetch tasks:", err);
+    }
   };
 
   const cardClassName = "bg-neutral-900 border-neutral-700 text-white p-6 h-50 overflow-auto";
@@ -65,7 +75,7 @@ const TasksPage = (props: Props) => {
             </Button>
           </div>
           <div>
-            <CreateTask />
+            <CreateTask allUsers={allUsers} />
           </div>
         </div>
 

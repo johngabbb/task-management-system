@@ -1,4 +1,11 @@
-import { CreateUserRequest, LoginRequest, LoginResponse } from "@/components/types";
+import {
+  CreateUserRequest,
+  LoginRequest,
+  LoginResponse,
+  TaskRequest,
+  TaskResponse,
+  User,
+} from "@/components/types";
 import axios from "axios";
 
 const api = axios.create({
@@ -15,8 +22,6 @@ api.interceptors.request.use(
       config.headers["Authorization"] = `Bearer ${token}`;
     }
 
-    console.log("token", token);
-    console.log(config);
     return config;
   },
   (error) => {
@@ -55,6 +60,23 @@ export const accountService = {
     const response = await api.get<boolean>("UserAccount/existinguser", {
       params: { username },
     });
+    return response.data;
+  },
+
+  getAllUsers: async () => {
+    const response = await api.get<User[]>("UserAccount/getusers");
+    return response.data;
+  },
+};
+
+export const taskService = {
+  createTask: async (taskInfo: TaskRequest) => {
+    const response = await api.post("Task/createtask", taskInfo);
+    return response.data;
+  },
+
+  getAllTask: async () => {
+    const response = await api.get<TaskResponse[]>("Task/getalltask");
     return response.data;
   },
 };

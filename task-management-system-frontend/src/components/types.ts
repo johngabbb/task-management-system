@@ -5,10 +5,12 @@ export interface LoginRequest {
   }
   
   export interface LoginResponse {
+    id: string;
     accessToken: string;
     username: string;
     expiresIn: number;
     role: string;
+    name: string;
   }
   
   export interface User {
@@ -44,4 +46,38 @@ export interface LoginRequest {
     roleId: string;
     account?: User;
     role?: Role;
+  }
+ ``
+  export interface TaskRequest {
+    name: string;
+    userId: string;
+    createdAt: Date;
+    status: number;
+    priority: number;
+    estimated: number;
+    description: string;
+  }
+
+  export interface TaskResponse {
+    name: string;
+    createdAt: Date;
+    updatedAt: Date;
+    status: string;
+    priority: string;
+    estimated: number;
+    code: string;
+    account: User;
+  }
+
+  export enum Status {
+    Pending = 1,
+    InProgress = 2,
+    QA = 3,
+    Completed = 4
+  }
+
+  export enum Priority {
+    Low = 1,
+    Medium = 2,
+    High = 3
   }

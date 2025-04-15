@@ -12,8 +12,16 @@ namespace task_management_system_backend.Models.Entities
         public string Name { get; set; } = string.Empty;
 
         [Required]
+        [Column("code")]
+        public string Code { get; set; } = string.Empty;
+
+        [Required]
         [Column("created")]
         public DateTime CreatedAt { get; set; }
+
+        [Required]
+        [Column("updated")]
+        public DateTime UpdatedAt { get; set; }
 
         [Required]
         [Column("status")]
@@ -33,22 +41,8 @@ namespace task_management_system_backend.Models.Entities
         [Column("user_id")]
         public Guid? UserId {  get; set; }
 
-        [Required]
-        [Column("sprint_id")]
-        public Guid SprintId {  get; set; }
-
-        [Required]
-        [Column("project_id")]
-        public Guid ProjectId {  get; set; }
-
 
         [ForeignKey(nameof(UserId))]
         public Account? Account { get; set; }
-
-        [ForeignKey(nameof(SprintId))]
-        public Sprint Sprint { get; set; } = null!;
-
-        [ForeignKey(nameof(ProjectId))]
-        public Project Project { get; set; } = null!;
     }
 }

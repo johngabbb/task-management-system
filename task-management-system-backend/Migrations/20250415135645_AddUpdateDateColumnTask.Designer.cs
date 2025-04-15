@@ -12,8 +12,8 @@ using task_management_system_backend.Data;
 namespace task_management_system_backend.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250412161917_AddTaskAndProjectTables")]
-    partial class AddTaskAndProjectTables
+    [Migration("20250415135645_AddUpdateDateColumnTask")]
+    partial class AddUpdateDateColumnTask
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -71,27 +71,6 @@ namespace task_management_system_backend.Migrations
                         });
                 });
 
-            modelBuilder.Entity("task_management_system_backend.Models.Entities.Project", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("id");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2")
-                        .HasColumnName("created");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("name");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("project");
-                });
-
             modelBuilder.Entity("task_management_system_backend.Models.Entities.Task", b =>
                 {
                     b.Property<Guid>("Id")
@@ -99,9 +78,19 @@ namespace task_management_system_backend.Migrations
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("id");
 
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("code");
+
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2")
-                        .HasColumnName("createdAt");
+                        .HasColumnName("created");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("description");
 
                     b.Property<decimal>("Estimated")
                         .HasColumnType("decimal(18,2)")
@@ -116,21 +105,19 @@ namespace task_management_system_backend.Migrations
                         .HasColumnType("int")
                         .HasColumnName("priority");
 
-                    b.Property<Guid>("ProjectId")
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("projectId");
-
                     b.Property<int>("Status")
                         .HasColumnType("int")
                         .HasColumnName("status");
 
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("updated");
+
                     b.Property<Guid?>("UserId")
                         .HasColumnType("uniqueidentifier")
-                        .HasColumnName("userId");
+                        .HasColumnName("user_id");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ProjectId");
 
                     b.HasIndex("UserId");
 
@@ -185,19 +172,11 @@ namespace task_management_system_backend.Migrations
 
             modelBuilder.Entity("task_management_system_backend.Models.Entities.Task", b =>
                 {
-                    b.HasOne("task_management_system_backend.Models.Entities.Project", "Project")
-                        .WithMany()
-                        .HasForeignKey("ProjectId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("task_management_system_backend.Models.Entities.Account", "Account")
                         .WithMany()
                         .HasForeignKey("UserId");
 
                     b.Navigation("Account");
-
-                    b.Navigation("Project");
                 });
 #pragma warning restore 612, 618
         }
