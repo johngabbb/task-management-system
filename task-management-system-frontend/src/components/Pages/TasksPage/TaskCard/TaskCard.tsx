@@ -1,9 +1,12 @@
+import { TaskResponse } from "@/components/types";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTrigger, DialogClose } from "@/components/ui/dialog";
 
-type Props = {};
+interface Task {
+  task: TaskResponse;
+}
 
-const TaskCard = (props: Props) => {
+const TaskCard = ({ task }: Task) => {
   return (
     <>
       <Dialog>
@@ -12,21 +15,24 @@ const TaskCard = (props: Props) => {
             {/* Button content remains the same */}
             <div className="text-left w-full overflow-hidden">
               <div className="text-sm font-bold w-full break-all overflow-hidden text-ellipsis whitespace-normal">
-                3Shape 3.0.1 - Case downloader continuous to log cases without file attachments as
-                log success causing discrepancies in the wfa dashboard
+                {task.name}
               </div>
             </div>
             <div className="flex flex-row w-full">
               <div className="flex-1 text-sm text-neutral-500 mt-2 text-left flex items-center">
                 <div className="h-2 w-2 bg-yellow-400 rounded-full mr-2"></div>
-                Medium
+                {task.priority}
               </div>
-              <div className="flex-1 text-sm text-neutral-500 mt-2 text-right">Gabriel Reyes</div>
+              <div className="flex-1 text-sm text-neutral-500 mt-2 text-right">
+                {task.account.name}
+              </div>
             </div>
 
             <div className="flex flex-row w-full">
-              <div className="flex-1 text-sm text-neutral-500 mt-2 text-left">April 5, 2025</div>
-              <div className="flex-1 text-sm text-neutral-500 mt-2 text-right">HT-1824</div>
+              <div className="flex-1 text-sm text-neutral-500 mt-2 text-left">
+                {task.createdAt.toString()}
+              </div>
+              <div className="flex-1 text-sm text-neutral-500 mt-2 text-right">{task.code}</div>
             </div>
           </Button>
         </DialogTrigger>
