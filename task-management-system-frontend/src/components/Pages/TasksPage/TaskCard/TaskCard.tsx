@@ -30,7 +30,7 @@ const TaskCard = ({ task }: Task) => {
 
             <div className="flex flex-row w-full">
               <div className="flex-1 text-sm text-neutral-500 mt-2 text-left">
-                {task.createdAt.toString()}
+                {task.createdAt.toString().split("T")[0]}
               </div>
               <div className="flex-1 text-sm text-neutral-500 mt-2 text-right">{task.code}</div>
             </div>
