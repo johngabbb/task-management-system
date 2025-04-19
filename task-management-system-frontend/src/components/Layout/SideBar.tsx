@@ -122,18 +122,6 @@ const SideBar = ({ movePage, activePage }: Props) => {
               </div>
             </Button>
 
-            {/* Projects Page */}
-            <Button
-              className={`${getButtonClass("projects")} group`}
-              type="button"
-              onClick={() => movePage("projects")}
-            >
-              <div className="flex gap-2 items-center">
-                <FolderKanban size={18} className={getIconClass("projects")} />
-                <span className={getTextClass("projects")}>Projects</span>
-              </div>
-            </Button>
-
             <div className="flex flex-col gap-5 mt-10">
               <Button
                 className={`${getButtonClass("settings")} group`}

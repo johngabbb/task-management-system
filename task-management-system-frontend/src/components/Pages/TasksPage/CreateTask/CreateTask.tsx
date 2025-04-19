@@ -28,9 +28,10 @@ import { Status, Priority } from "@/components/types";
 
 interface Props {
   allUsers: User[] | null;
+  fetchTasks: () => void;
 }
 
-const CreateTask = ({ allUsers }: Props) => {
+const CreateTask = ({ allUsers, fetchTasks }: Props) => {
   const [open, setOpen] = React.useState(false);
 
   const formSchema = z.object({
@@ -72,20 +73,27 @@ const CreateTask = ({ allUsers }: Props) => {
   }, [open, form]);
 
   const onCreateTask = async (values: z.infer<typeof formSchema>) => {
-    console.log(values);
+    try {
+      const taskRequest: TaskRequest = {
+        name: values.taskTitle,
+        userId: values.assign,
+        createdAt: new Date(),
+        status: values.taskStage, // Already converted to number by zod transform
+        priority: values.priority, // Already converted to number by zod transform
+        estimated: values.storyPoints ? Number(values.storyPoints) : 0,
+        description: values.description || "",
+      };
 
-    const taskRequest: TaskRequest = {
-      name: values.taskTitle,
-      userId: values.assign,
-      createdAt: new Date(),
-      status: values.taskStage, // Already converted to number by zod transform
-      priority: values.priority, // Already converted to number by zod transform
-      estimated: values.storyPoints ? Number(values.storyPoints) : 0,
-      description: values.description || "",
-    };
+      await taskService.createTask(taskRequest);
+      setOpen(false);
 
-    const response = await taskService.createTask(taskRequest);
-    setOpen(false);
+      // Call the refresh function after task creation
+      if (fetchTasks) {
+        fetchTasks();
+      }
+    } catch (error) {
+      console.error("Failed to create task:", error);
+    }
   };
 
   return (

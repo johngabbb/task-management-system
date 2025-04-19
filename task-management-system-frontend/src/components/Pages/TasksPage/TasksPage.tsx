@@ -12,6 +12,11 @@ const TasksPage = (props: Props) => {
   const [activeView, setActiveView] = useState<"board" | "list">("board");
   const [allUsers, setAllUsers] = useState<User[] | null>(null);
   const [allTasks, setAllTasks] = useState<TaskResponse[] | null>(null);
+  const [pendingTasks, setPendingTasks] = useState<TaskResponse[] | null>(null);
+  const [inProgressTasks, setInProgressTasks] = useState<TaskResponse[] | null>(null);
+  const [qaTasks, setQaTasks] = useState<TaskResponse[] | null>(null);
+  const [completedTasks, setCompletedTasks] = useState<TaskResponse[] | null>(null);
+
   const effectRan = useRef(false); // Added ref to track if effect has run
 
   const handleActiveView = (view: "board" | "list") => {
@@ -22,10 +27,16 @@ const TasksPage = (props: Props) => {
     // Only run once even in StrictMode
     if (!effectRan.current) {
       effectRan.current = true;
-      getAllUsers();
       fetchTasks();
+      getAllUsers();
     }
   }, []);
+
+  useEffect(() => {
+    if (allTasks) {
+      filterTask();
+    }
+  }, [allTasks]);
 
   const getAllUsers = async () => {
     try {
@@ -46,6 +57,20 @@ const TasksPage = (props: Props) => {
     } catch (err) {
       console.error("Failed to fetch tasks:", err);
     }
+  };
+
+  const filterTask = () => {
+    if (!allTasks) return;
+
+    const pending = allTasks?.filter((task) => task.status === "Pending");
+    const inProgress = allTasks?.filter((task) => task.status === "InProgress");
+    const qa = allTasks?.filter((task) => task.status === "QA");
+    const completed = allTasks?.filter((task) => task.status === "Completed");
+
+    setPendingTasks(pending);
+    setInProgressTasks(inProgress);
+    setQaTasks(qa);
+    setCompletedTasks(completed);
   };
 
   const cardClassName = "bg-neutral-900 border-neutral-700 text-white p-6 h-50 overflow-auto";
@@ -75,7 +100,7 @@ const TasksPage = (props: Props) => {
             </Button>
           </div>
           <div>
-            <CreateTask allUsers={allUsers} />
+            <CreateTask allUsers={allUsers} fetchTasks={fetchTasks} />
           </div>
         </div>
 
@@ -91,23 +116,27 @@ const TasksPage = (props: Props) => {
             <div className="pr-5">
               <div className="grid grid-cols-4 gap-10">
                 <div className="flex flex-col gap-5 h-full">
-                  <TaskCard />
-                  <TaskCard />
+                  {pendingTasks?.map((task) => (
+                    <TaskCard task={task} />
+                  ))}
                 </div>
 
                 <div className="flex flex-col gap-5 h-full">
-                  <TaskCard />
-                  <TaskCard />
+                  {inProgressTasks?.map((task) => (
+                    <TaskCard task={task} />
+                  ))}
                 </div>
 
                 <div className="flex flex-col gap-5 h-full">
-                  <TaskCard />
+                  {qaTasks?.map((task) => (
+                    <TaskCard task={task} />
+                  ))}
                 </div>
 
                 <div className="flex flex-col gap-5 h-full">
-                  <TaskCard />
-                  <TaskCard />
-                  <TaskCard />
+                  {completedTasks?.map((task) => (
+                    <TaskCard task={task} />
+                  ))}
                 </div>
               </div>
             </div>

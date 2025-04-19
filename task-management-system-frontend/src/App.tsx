@@ -7,7 +7,6 @@ import TasksPage from "./components/Pages/TasksPage/TasksPage";
 import Layout from "./components/Layout/Layout";
 import BacklogPage from "./components/Pages/BacklogPage/BacklogPage";
 import TeamPage from "./components/Pages/TeamPage/TeamPage";
-import ProjectsPage from "./components/Pages/ProjectsPage/ProjectsPage";
 import { AuthProvider } from "./hooks/AuthContext";
 import ProtectedRoute from "./components/ProtectedRoute";
 
@@ -27,8 +26,6 @@ function App() {
               <Route path="/backlog" element={<BacklogPage />}></Route>
 
               <Route path="/team" element={<TeamPage />}></Route>
-
-              <Route path="/projects" element={<ProjectsPage />}></Route>
             </Route>
           </Route>
 

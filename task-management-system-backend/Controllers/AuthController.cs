@@ -8,11 +8,11 @@ namespace task_management_system_backend.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AccountController : ControllerBase
+    public class AuthController : ControllerBase
     {
         private readonly JwtService _jwtService;
 
-        public AccountController(JwtService jwtService)
+        public AuthController(JwtService jwtService)
         {
             _jwtService = jwtService;
         }
