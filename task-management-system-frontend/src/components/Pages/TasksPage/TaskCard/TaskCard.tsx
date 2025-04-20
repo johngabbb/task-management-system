@@ -11,7 +11,7 @@ const TaskCard = ({ task }: Task) => {
     <>
       <Dialog>
         <DialogTrigger asChild>
-          <Button className="h-50 p-6 border-1 border-neutral-700 hover:bg-black cursor-pointer text-white w-full flex items-start flex-col justify-between">
+          <Button className="h-fit p-6 border-1 border-neutral-700 hover:bg-black cursor-pointer text-white w-full flex items-start flex-col justify-between">
             {/* Button content remains the same */}
             <div className="text-left w-full overflow-hidden">
               <div className="text-sm font-bold w-full break-all overflow-hidden text-ellipsis whitespace-normal">
@@ -20,7 +20,15 @@ const TaskCard = ({ task }: Task) => {
             </div>
             <div className="flex flex-row w-full">
               <div className="flex-1 text-sm text-neutral-500 mt-2 text-left flex items-center">
-                <div className="h-2 w-2 bg-yellow-400 rounded-full mr-2"></div>
+                <div
+                  className={`h-2 w-2 rounded-full mr-2 ${
+                    task.priority === "Low"
+                      ? "bg-green-400"
+                      : task.priority === "Medium"
+                      ? "bg-yellow-400"
+                      : "bg-red-400"
+                  }`}
+                ></div>
                 {task.priority}
               </div>
               <div className="flex-1 text-sm text-neutral-500 mt-2 text-right">
@@ -36,9 +44,12 @@ const TaskCard = ({ task }: Task) => {
             </div>
           </Button>
         </DialogTrigger>
-        <DialogContent className="!max-w-none !w-[1020px] !h-[720px] bg-neutral-950 border-1 border-neutral-700 flex flex-col justify-center items-center">
+        <DialogContent className="!max-w-none !w-[1020px] !h-[720px] bg-neutral-950 border-1 border-neutral-700 flex flex-col">
           {/* Simple X button */}
           <DialogClose className=" text-neutral-500 hover:text-white"></DialogClose>
+          <div>
+            <div className="text-white font-bold text-2xl">{task.name}</div>
+          </div>
         </DialogContent>
       </Dialog>
     </>
